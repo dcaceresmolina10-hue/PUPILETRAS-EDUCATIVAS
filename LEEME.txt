@@ -1,20 +1,19 @@
-PUPILETRAS EDUCATIVAS — VERSIÓN RENOVADA
-Archivos: index.html, manifest.json, sw.js, portada.png.
+PUPILETRAS EDUCATIVAS – VERSIÓN AMPLIADA
 
-PUBLICAR EN GITHUB PAGES:
-1. Descarga y descomprime este ZIP.
-2. En tu repositorio PUPILETRAS-EDUCATIVAS, entra en Code > Add file > Upload files.
-3. Sube los 4 archivos de esta carpeta a la raíz del repositorio, reemplazando los anteriores.
+Incluye: pupiletras por ciclos III, IV y V; actividades de pistas tipo crucigrama con audio; lectoescritura con lectura en voz alta y preguntas de comprensión; asociación de imágenes y palabras; seguimiento de avances guardado localmente en el dispositivo; e impresión de fichas desde el navegador (elige Guardar como PDF).
+
+PUBLICAR EN GITHUB PAGES
+1. Descomprime este ZIP en tu computadora.
+2. Entra a tu repositorio de GitHub y abre la pestaña Code.
+3. Sube/reemplaza index.html, features.js, sw.js, manifest.json y portada.png en la raíz del repositorio.
 4. Pulsa Commit changes.
-5. Espera a que termine Pages build and deployment.
-6. Abre la página y actualiza con Ctrl+Shift+R. Si sigue en caché, cierra el navegador y vuelve a abrir o prueba una ventana de incógnito.
+5. Abre la página publicada y actualízala. Si ves la versión anterior, cierra la pestaña y vuelve a abrirla.
 
-Incluye:
-- Diseño colorido y adaptable a celular, tablet y computadora.
-- Ilustración de portada.
-- 3 ciclos y 4 áreas.
-- 10 temas por cada área y ciclo (120 conjuntos temáticos).
-- Lista de palabras visible, letras con contraste, selección por primer y último clic.
-- Pistas, voz del navegador, puntaje, cronómetro, barra de progreso.
-- Modo docente para crear una pupiletras con 5–15 palabras.
-- Actividad breve de comprensión.
+FICHAS PDF
+Pulsa “Ficha imprimible” y en el cuadro de impresión del navegador elige “Guardar como PDF”.
+
+AVANCES
+El historial se guarda solo en el navegador y dispositivo donde se usa. No es una base de datos compartida entre dispositivos ni identifica automáticamente a cada estudiante.
+
+AUDIO
+La lectura usa las voces disponibles en el navegador/dispositivo. Se recomienda Chrome actualizado y tener el volumen activado.
