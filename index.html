@@ -22,8 +22,8 @@ button{border:0;background:var(--green);color:#fff;font-weight:800;cursor:pointe
 .words{display:flex;flex-wrap:wrap;gap:8px}.word{padding:9px 11px;border-radius:10px;background:#edf5f1;border:2px solid transparent;font-weight:800}.word.found{background:#d9f5df;border-color:#159957;text-decoration:line-through;color:#17663f}
 .grid-wrap{display:flex;justify-content:center;overflow:auto;padding:6px}
 .grid{display:grid;gap:3px;user-select:none;touch-action:none;background:#d6e9df;padding:5px;border-radius:12px}
-.cell{width:clamp(30px,8vw,48px);height:clamp(30px,8vw,48px);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:7px;font-size:clamp(14px,3.6vw,21px);font-weight:900;cursor:pointer}
-.cell.selected{background:#bfead0}.cell.found{background:#8ed6ad;color:#063d29}
+.cell{width:clamp(27px,6.5vw,44px);height:clamp(27px,6.5vw,44px);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:7px;font-size:clamp(14px,3.6vw,21px);font-weight:900;cursor:pointer}
+.cell.selected{background:#ffe58a!important;outline:2px solid #c38b00}.cell.hint{background:#b8d9ff!important;outline:2px solid #3977bf}.cell.found{background:#8ed6ad;color:#063d29}
 .stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--soft);padding:8px 12px;border-radius:10px;font-weight:800}
 .notice{padding:10px;border-radius:10px;background:#fff8d8;border-left:5px solid var(--gold);font-size:14px}
 .small{font-size:12px;color:#557268}
@@ -62,6 +62,7 @@ footer{text-align:center;padding:20px;color:#60766d;font-size:12px}
  <div class="notice" style="margin-top:10px">
   <b>Cómo jugar:</b> toca la primera letra y luego la última. También puedes arrastrar sobre las letras. Busca las palabras de la lista.
  </div>
+ <p id="feedback" aria-live="polite"></p>
 </section>
 
 <section class="panel word-layout">
@@ -116,89 +117,38 @@ const BANK={
  }
 };
 
-let state={words:[],found:new Set(),size:10,grid:[],placements:[],start:null,score:0,time:0,timer:null};
-
+// Amplía el banco a 10 temas por área y ciclo con vocabulario curricular y local.
+const EXTRA={
+"Comunicación":[["Lectura y comprensión","LECTURA,TEXTO,IDEA,TEMA,LEER,COMPRENDER"],["Palabras y sílabas","SILABA,LETRA,SONIDO,PALABRA,VOZ,LEER"],["Cuentos","CUENTO,TITULO,INICIO,NUDO,FINAL,PERSONAJE"],["Poemas","POEMA,VERSO,RIMA,CANTO,ESTROFA,VOZ"],["Oraciones","ORACION,SUJETO,VERBO,PUNTO,IDEA,TEXTO"],["Descripción","DESCRIBIR,DETALLE,FORMA,COLOR,TAMAÑO,OBJETO"],["Verbos","VERBO,ACCION,CORRER,LEER,ESCRIBIR,JUGAR"],["Adjetivos","ADJETIVO,GRANDE,PEQUEÑO,VERDE,ALTO,SUAVE"],["Ortografía","TILDE,SILABA,ACENTO,MAYUSCULA,PUNTO,COMA"],["Valle Fortaleza","POCOR,PARARIN,RECUAY,VALLE,PALTA,LUCUMA"]],
+"Ciencia y Tecnología":[["Seres vivos","PLANTA,ANIMAL,VIDA,RAIZ,HOJA,SEMILLA"],["Cuerpo humano","CUERPO,ORGANO,CEREBRO,MANO,OJO,PULMON"],["Agua y vida","AGUA,RIO,GOTA,LLUVIA,AHORRO,CUIDAR"],["Aire y atmósfera","AIRE,VIENTO,NUBE,ATMOSFERA,OZONO,CLIMA"],["Plantas del valle","PALTA,LUCUMA,RAIZ,TALLO,FLOR,FRUTO"],["Animales","VACA,OVEJA,AVE,PEZ,REPTIL,MAMIFERO"],["Energía","ENERGIA,SOL,LUCES,CALOR,FUERZA,VIENTO"],["Ecosistemas","ECOSISTEMA,HABITAT,ESPECIE,AGUA,SUELO,CLIMA"],["Residuos y reciclaje","RESIDUO,RECICLAR,REUSAR,REDUCIR,LIMPIO,COMPOST"],["Agricultura sostenible","CHACRA,SUELO,SEMILLA,RIEGO,ABONO,COSECHA"]],
+"Personal Social":[["Familia","MAMA,PAPA,HIJO,ABUELO,ABUELA,FAMILIA"],["Escuela","AULA,LIBRO,MAESTRO,AMIGO,REGLA,CUADERNO"],["Comunidad","POCOR,PARARIN,RECUAY,VECINO,AYUDA,COMUNIDAD"],["Identidad","IDENTIDAD,NOMBRE,ORIGEN,CULTURA,HISTORIA,FAMILIA"],["Derechos y deberes","DERECHO,DEBER,SALUD,EDUCACION,RESPETO,JUSTICIA"],["Convivencia","DIALOGO,RESPETO,ACUERDO,ESCUCHA,PAZ,AYUDA"],["Símbolos patrios","PERU,BANDERA,ESCUDO,HIMNO,PATRIA,ROJO"],["Historia local","HISTORIA,VALLE,RECUAY,POCOR,PARARIN,MEMORIA"],["Actividades económicas","AGRICULTURA,FRUTA,CHACRA,MERCADO,TRABAJO,COSECHA"],["Prevención de riesgos","SISMO,HUAICO,ALARMA,MOCHILA,RIESGO,PREVENIR"]],
+"Matemática":[["Números y conteo","UNO,DOS,TRES,CUATRO,CINCO,DIEZ"],["Suma y resta","SUMA,RESTA,TOTAL,DIFERENCIA,AGREGAR,QUITAR"],["Multiplicación","MULTIPLICAR,FACTOR,PRODUCTO,DOBLE,TRIPLE,TABLA"],["División","DIVIDIR,REPARTIR,MITAD,GRUPO,COCIENTE,RESTO"],["Fracciones","FRACCION,MEDIO,TERCIO,CUARTO,MITAD,PARTE"],["Decimales","DECIMAL,COMA,ENTERO,DECIMA,CENTESIMA,VALOR"],["Geometría","FIGURA,LADO,ANGULO,VERTICE,RECTA,TRIANGULO"],["Medidas","METRO,LITRO,KILO,MASA,LARGO,MEDIR"],["Estadística","TABLA,GRAFICO,DATOS,MODA,PROMEDIO,ENCUESTA"],["Matemática en la chacra","PALTA,LUCUMA,PRECIO,COSECHA,KILO,TOTAL"]]};
+for (const cyc of Object.keys(BANK)) for (const area of Object.keys(BANK[cyc])) {
+ const extras=EXTRA[area]; let idx=0;
+ for (const [title,raw] of extras) { if (!BANK[cyc][area][title]) BANK[cyc][area][title]=raw.split(','); }
+}
+let state={words:[],found:new Set(),size:10,grid:[],placements:[],first:null,score:0,time:0,timer:null,hintIndex:0};
 const $=id=>document.getElementById(id);
-function normalize(s){return s.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toUpperCase().replace(/[^A-ZÑ]/g,"")}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function dirs(level){return level==="3"?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[1,1]]:[[0,1],[1,0],[1,1],[1,-1]]}
-function canPlace(word,r,c,dr,dc,size,g){
- for(let i=0;i<word.length;i++){let rr=r+dr*i,cc=c+dc*i;if(rr<0||cc<0||rr>=size||cc>=size)return false;if(g[rr][cc]!==""&&g[rr][cc]!==word[i])return false}
- return true
-}
-function build(words,level){
- let max=Math.max(...words.map(w=>w.length),6); let size=Math.max(9,Math.min(14,max+3)); if(level==="3")size=Math.max(size,12);
- let g=Array.from({length:size},()=>Array(size).fill("")); let placements=[];
- for(const word of shuffle(words)){
-   let placed=false;
-   for(let t=0;t<700&&!placed;t++){
-    let d=shuffle(dirs(level))[0],r=Math.floor(Math.random()*size),c=Math.floor(Math.random()*size);
-    if(canPlace(word,r,c,d[0],d[1],size,g)){for(let i=0;i<word.length;i++)g[r+d[0]*i][c+d[1]*i]=word[i];placements.push({word,r,c,dr:d[0],dc:d[1]});placed=true}
-   }
-   if(!placed) return build(words,level);
- }
- const letters="AEIOULMNPRS TCDGFBVH".replace(/ /g,"");
- for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(!g[r][c])g[r][c]=letters[Math.floor(Math.random()*letters.length)];
- return {g,placements,size}
-}
-function setOptions(){
- const cyc=$("cycle").value, data=BANK[cyc];
- $("area").innerHTML=Object.keys(data).map(x=>`<option>${x}</option>`).join("");
- setTopics(); newGame();
-}
-function setTopics(){
- const data=BANK[$("cycle").value][$("area").value];
- $("topic").innerHTML=Object.keys(data).map(x=>`<option>${x}</option>`).join("");
-}
-function newGame(custom=null){
- clearInterval(state.timer);state.time=0;$("timer").textContent=0;
- let words=custom?custom.map(normalize).filter(x=>x.length>=2):BANK[$("cycle").value][$("area").value][$("topic").value].map(normalize);
- words=[...new Set(words)].slice(0,15); if(!words.length)return;
- state.words=words;state.found=new Set();state.score=0;state.start=null;
- let built=build(words,$("level").value);Object.assign(state,{grid:built.g,placements:built.placements,size:built.size});
- render();
- state.timer=setInterval(()=>{$("timer").textContent=++state.time},1000);
-}
-function render(){
- $("score").textContent=state.score;$("foundCount").textContent=state.found.size;$("totalCount").textContent=state.words.length;
- $("grid").style.gridTemplateColumns=`repeat(${state.size},auto)`;$("grid").innerHTML="";
- for(let r=0;r<state.size;r++)for(let c=0;c<state.size;c++){
-   let b=document.createElement("div");b.className="cell";b.textContent=state.grid[r][c];b.dataset.r=r;b.dataset.c=c;
-   b.onpointerdown=e=>selectStart(+b.dataset.r,+b.dataset.c,e);
-   b.onpointerup=e=>selectEnd(+b.dataset.r,+b.dataset.c,e);
-   $("grid").appendChild(b);
- }
- $("wordList").innerHTML=state.words.map(w=>`<span class="word ${state.found.has(w)?"found":""}" id="w-${w}">${w}</span>`).join("");
- $("gameTitle").textContent=`${$("cycle").value} · ${$("area").value} · ${$("topic").value}`;
- renderQuiz();
-}
-function cell(r,c){return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`)}
-function selectStart(r,c,e){state.start={r,c};cell(r,c)?.classList.add("selected")}
-function selectEnd(r,c,e){
- if(!state.start)return;let s=state.start;state.start=null;
- document.querySelectorAll(".cell.selected").forEach(x=>x.classList.remove("selected"));
- let dr=Math.sign(r-s.r),dc=Math.sign(c-s.c),len=Math.max(Math.abs(r-s.r),Math.abs(c-s.c))+1;
- if(!(dr===0||dc===0||Math.abs(r-s.r)===Math.abs(c-s.c)))return;
- let text="";for(let i=0;i<len;i++)text+=state.grid[s.r+dr*i][s.c+dc*i];
- let rev=text.split("").reverse().join(""), hit=state.words.find(w=>!state.found.has(w)&&(w===text||w===rev));
- if(hit){state.found.add(hit);state.score+=10;for(let i=0;i<len;i++)cell(s.r+dr*i,s.c+dc*i)?.classList.add("found");render();if(state.found.size===state.words.length){state.score+=30;alert("🎉 ¡Excelente! Encontraste todas las palabras.");}}
-}
-function renderQuiz(){
- const area=$("area").value, cyc=$("cycle").value;
- let q;
- if(area==="Comunicación")q={t:"¿Qué hacemos primero para aprender con una pupiletras?",o:["Reconocer y leer las palabras","Borrar la cuadrícula","Contar las letras sin leer"],a:0};
- else if(area==="Ciencia y Tecnología")q={t:"¿Cuál es un recurso natural que debemos cuidar en Pocor?",o:["Agua","Basura","Humo"],a:0};
- else if(area==="Personal Social")q={t:"¿Qué ayuda a convivir mejor en la comunidad?",o:["Respeto","Desorden","Descuido"],a:0};
- else q={t:"¿Qué operación permite juntar cantidades?",o:["Suma","Resta","División"],a:0};
- $("quiz").innerHTML=`<b>${q.t}</b>`+q.o.map((x,i)=>`<button class="option" onclick="answerQuiz(this,${i},${q.a})">${x}</button>`).join("");
-}
-window.answerQuiz=(el,i,a)=>{document.querySelectorAll(".option").forEach(x=>x.disabled=true);el.classList.add(i===a?"correct":"wrong");if(i===a)state.score+=5;$("score").textContent=state.score}
-$("cycle").onchange=setOptions;$("area").onchange=()=>{setTopics();newGame()};$("topic").onchange=()=>newGame();$("level").onchange=()=>newGame();$("newGame").onclick=()=>newGame();
-$("hint").onclick=()=>{let left=state.words.find(w=>!state.found.has(w));if(!left)return;let p=state.placements.find(x=>x.word===left);if(p){cell(p.r,p.c)?.classList.add("selected");setTimeout(()=>cell(p.r,p.c)?.classList.remove("selected"),1200)}};
-$("readWords").onclick=()=>{if(!("speechSynthesis"in window))return alert("Tu dispositivo no admite lectura de voz.");speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(state.words.join(", "));u.lang="es-PE";speechSynthesis.speak(u)};
-$("generateCustom").onclick=()=>{let w=$("customWords").value.split(/\\n|,/).map(x=>x.trim()).filter(Boolean);if(w.length<5)return alert("Escribe al menos 5 palabras.");newGame(w)};
-if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
-setOptions();
+function norm(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-ZÑ]/g,'')}
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function directions(level){return level==='3'?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[-1,-1]]:[[0,1],[1,0],[1,1],[1,-1]]}
+function canPlace(w,r,c,dr,dc,n,g){for(let i=0;i<w.length;i++){let y=r+dr*i,x=c+dc*i;if(y<0||x<0||y>=n||x>=n||(g[y][x]&&g[y][x]!==w[i]))return false}return true}
+function build(words,level){let n=Math.max(10,Math.min(16,Math.max(...words.map(w=>w.length),6)+2));let g=Array.from({length:n},()=>Array(n).fill('')),placements=[];
+ for(const w of [...words].sort((a,b)=>b.length-a.length)){let ok=false;for(let t=0;t<2200&&!ok;t++){let [dr,dc]=shuffle(directions(level))[0],r=Math.floor(Math.random()*n),c=Math.floor(Math.random()*n);if(canPlace(w,r,c,dr,dc,n,g)){for(let i=0;i<w.length;i++)g[r+dr*i][c+dc*i]=w[i];placements.push({word:w,r,c,dr,dc});ok=true}}if(!ok){return build(words,level)}}
+ const letters='AEIOULMNPRSTCDGFBVH';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(!g[r][c])g[r][c]=letters[Math.floor(Math.random()*letters.length)];return {g,placements,n}}
+function setOptions(){let data=BANK[$('cycle').value];$('area').innerHTML=Object.keys(data).map(a=>`<option>${a}</option>`).join('');setTopics();newGame()}
+function setTopics(){let data=BANK[$('cycle').value][$('area').value];$('topic').innerHTML=Object.keys(data).map(t=>`<option>${t}</option>`).join('')}
+function newGame(custom=null){clearInterval(state.timer);state.time=0;$('timer').textContent='0';state.score=0;state.found=new Set();state.first=null;state.hintIndex=0;let words=custom?custom.map(norm).filter(w=>w.length>=2):BANK[$('cycle').value][$('area').value][$('topic').value].map(norm);words=[...new Set(words)].slice(0,15);if(!words.length)return;let b=build(words,$('level').value);Object.assign(state,{words,grid:b.g,placements:b.placements,size:b.n});render();$('feedback')&&($('feedback').textContent='Toca la primera y luego la última letra de la palabra.');state.timer=setInterval(()=>{$('timer').textContent=String(++state.time)},1000)}
+function render(){ $('score').textContent=state.score;$('foundCount').textContent=state.found.size;$('totalCount').textContent=state.words.length;$('grid').style.gridTemplateColumns=`repeat(${state.size}, minmax(0,1fr))`;$('grid').innerHTML='';
+ for(let r=0;r<state.size;r++)for(let c=0;c<state.size;c++){let b=document.createElement('button');b.type='button';b.className='cell';b.textContent=state.grid[r][c];b.dataset.r=r;b.dataset.c=c;b.onclick=()=>selectCell(r,c);$('grid').appendChild(b)}
+ $('wordList').innerHTML=state.words.map(w=>`<span class="word ${state.found.has(w)?'found':''}" id="w-${w}">${w}</span>`).join('');$('gameTitle').textContent=`${$('cycle').value} · ${$('area').value} · ${$('topic').value}`;renderQuiz()}
+function clearMarks(){document.querySelectorAll('.cell.selected,.cell.hint').forEach(x=>x.classList.remove('selected','hint'))}
+function selectCell(r,c){let el=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);if(!state.first){clearMarks();state.first={r,c};el.classList.add('selected');$('feedback').textContent='Ahora toca la última letra de la palabra.';return}let a=state.first;state.first=null;clearMarks();let dr=r-a.r,dc=c-a.c;if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))){$('feedback').textContent='Selecciona una línea horizontal, vertical o diagonal.';return}let sr=Math.sign(dr),sc=Math.sign(dc),len=Math.max(Math.abs(dr),Math.abs(dc))+1,txt='';for(let i=0;i<len;i++)txt+=state.grid[a.r+sr*i][a.c+sc*i];let rev=txt.split('').reverse().join(''),hit=state.words.find(w=>!state.found.has(w)&&(w===txt||w===rev));if(!hit){$('feedback').textContent=`“${txt}” no coincide con una palabra. Prueba otra vez.`;return}state.found.add(hit);state.score+=10;for(let i=0;i<len;i++)document.querySelector(`.cell[data-r="${a.r+sr*i}"][data-c="${a.c+sc*i}"]`)?.classList.add('found');render();$('feedback').textContent=`¡Muy bien! Encontraste ${hit}.`;if(state.found.size===state.words.length){clearInterval(state.timer);state.score+=30;$('score').textContent=state.score;$('feedback').textContent='¡Excelente! Encontraste todas las palabras. +30 puntos.'}}
+function hint(){let remaining=state.words.filter(w=>!state.found.has(w));if(!remaining.length){$('feedback').textContent='¡Ya encontraste todas las palabras!';return}let w=remaining[state.hintIndex++%remaining.length],p=state.placements.find(x=>x.word===w);clearMarks();for(let i=0;i<w.length;i++)document.querySelector(`.cell[data-r="${p.r+p.dr*i}"][data-c="${p.c+p.dc*i}"]`)?.classList.add('hint');$('feedback').textContent=`Pista: la palabra ${w} está resaltada en azul.`}
+function readWords(){if(!('speechSynthesis'in window)){ $('feedback').textContent='Tu navegador no admite lectura por voz. Prueba Chrome.';return}speechSynthesis.cancel();let list=state.words.filter(w=>!state.found.has(w));if(!list.length)list=state.words;let u=new SpeechSynthesisUtterance(list.join('. '));u.lang='es-ES';u.rate=.82;u.onstart=()=> $('feedback').textContent='Leyendo palabras…';u.onend=()=> $('feedback').textContent='Lectura terminada.';u.onerror=()=> $('feedback').textContent='No se pudo reproducir la voz; revisa el volumen del dispositivo.';speechSynthesis.speak(u)}
+function renderQuiz(){let area=$('area').value,q=area==='Comunicación'?{t:'¿Qué hacemos para comprender una palabra?',o:['Leerla y relacionarla con su significado','Ignorarla','Taparla'],a:0}:area==='Ciencia y Tecnología'?{t:'¿Qué recurso debemos cuidar?',o:['El agua','El humo','La basura'],a:0}:area==='Personal Social'?{t:'¿Qué ayuda a convivir mejor?',o:['El respeto','El maltrato','El desorden'],a:0}:{t:'¿Qué operación permite juntar cantidades?',o:['La suma','La resta','La división'],a:0};$('quiz').innerHTML=`<b>${q.t}</b>`+q.o.map((x,i)=>`<button type="button" class="option" data-i="${i}">${x}</button>`).join('');document.querySelectorAll('.option').forEach(el=>el.onclick=()=>{document.querySelectorAll('.option').forEach(b=>b.disabled=true);let yes=Number(el.dataset.i)===q.a;el.classList.add(yes?'correct':'wrong');if(yes){state.score+=5;$('score').textContent=state.score}})}
+$('cycle').onchange=setOptions;$('area').onchange=()=>{setTopics();newGame()};$('topic').onchange=()=>newGame();$('level').onchange=()=>newGame();$('newGame').onclick=()=>newGame();$('hint').onclick=hint;$('readWords').onclick=readWords;$('generateCustom').onclick=()=>{let w=$('customWords').value.split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean);if(w.length<5){$('feedback').textContent='Escribe al menos 5 palabras.';return}if(w.length>15){$('feedback').textContent='Usa como máximo 15 palabras.';return}newGame(w)};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));setOptions();
 </script>
 </body>
 </html>
