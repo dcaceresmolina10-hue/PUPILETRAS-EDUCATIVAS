@@ -19,7 +19,11 @@ AUDIO
 La lectura usa las voces disponibles en el navegador/dispositivo. Se recomienda Chrome actualizado y tener el volumen activado.
 
 
-NOVEDAD VERSIÓN 7: registro de estudiante y grado, panel del docente con resumen de resultados, filtro por estudiante y descarga del reporte en CSV para abrir en Excel. Los datos se guardan en el navegador/dispositivo. Selecciona y guarda el estudiante antes de realizar las actividades.
+NUEVO EN LA VERSION 9 - PANEL DEL DOCENTE
+- Registra y selecciona estudiante por nombre y grado.
+- Los resultados nuevos se asocian al estudiante seleccionado.
+- Filtra reportes por estudiante, área y ciclo.
+- Consulta cantidad de actividades y porcentaje de aciertos.
+- Descarga un reporte CSV compatible con Excel o imprime el informe.
 
-
-VERSIÓN 8: Se amplió el repertorio de representaciones visuales para que las palabras de los distintos ciclos y áreas muestren una imagen/emoji relacionada en la actividad de asociación. También se actualizó la caché del navegador.
+IMPORTANTE: la información se guarda localmente en este navegador/dispositivo. Los resultados antiguos que no tenían estudiante registrado aparecen como “Sin registrar”. No se sincroniza con otros dispositivos.
