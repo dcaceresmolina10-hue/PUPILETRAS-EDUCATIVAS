@@ -62,7 +62,7 @@ const BANK={"III": {"Comunicación": {"Vocales y palabras": ["MAMA", "MESA", "MI
 const labels={III:"III ciclo · 1.º–2.º",IV:"IV ciclo · 3.º–4.º",V:"V ciclo · 5.º–6.º"};
 const $=id=>document.getElementById(id);
 let cycle="III",area="Comunicación",topic="",level="1";
-let game={words:[],grid:[],placements:[],found:new Set(),size:10,first:null,score:0,hintAt:0,time:0,timer:null,custom:false};
+let game={words:[],grid:[],placements:[],found:new Set(),size:10,first:null,score:0,hintAt:0,time:0,timer:null,custom:false,progressSaved:false};
 function norm(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-ZÑ]/g,"")}
 function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function dirs(){return level==="3"?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[-1,-1]]:[[0,1],[1,0],[1,1],[1,-1]]}
@@ -81,7 +81,7 @@ function makeGrid(words){
 }
 function populateTopics(){const names=Object.keys(BANK[cycle][area]);$("topic").innerHTML=names.map(n=>`<option value="${n}">${n}</option>`).join("");topic=names[0]}
 function start(words=null){
- clearInterval(game.timer);game.time=0;game.score=0;game.found=new Set();game.first=null;game.hintAt=0;game.custom=!!words;
+ clearInterval(game.timer);game.time=0;game.score=0;game.found=new Set();game.first=null;game.hintAt=0;game.custom=!!words;game.progressSaved=false;
  let source=words||BANK[cycle][area][topic];let list=[...new Set(source.map(norm).filter(w=>w.length>=2))].slice(0,15);
  const built=makeGrid(list);Object.assign(game,{words:list,grid:built.g,placements:built.ps,size:built.n});
  $("timer").textContent="00:00";render();game.timer=setInterval(()=>{game.time++;$("timer").textContent=String(Math.floor(game.time/60)).padStart(2,"0")+":"+String(game.time%60).padStart(2,"0")},1000);
@@ -142,6 +142,7 @@ function choose(r,c){
    game.score+=30;
    $("score").textContent=game.score;
    $("feedback").textContent="🎉 ¡Excelente! Encontraste todas las palabras y ganaste 30 puntos extra.";
+   if(!game.progressSaved && typeof recordProgress === "function"){recordProgress("Pupiletras",game.found.size,game.words.length);game.progressSaved=true;}
  }
 }
 function hint(){let left=game.words.filter(w=>!game.found.has(w));if(!left.length){$("feedback").textContent="¡Ya encontraste todas las palabras!";return}let w=left[game.hintAt%left.length];game.hintAt++;let p=game.placements.find(x=>x.word===w);clearMarks();for(let i=0;i<w.length;i++)document.querySelector(`.cell[data-r="${p.r+p.dr*i}"][data-c="${p.c+p.dc*i}"]`)?.classList.add("hint");$("feedback").textContent="💡 Pista: las letras azules forman "+w+". Observa su dirección."}

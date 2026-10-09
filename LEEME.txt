@@ -1,10 +1,13 @@
-PUPILETRAS EDUCATIVAS — VERSIÓN 10
+PUPILETRAS EDUCATIVAS — VERSIÓN 11
 
-Mejora: actividad “Relaciona la imagen con la palabra”.
+Mejoras finales de seguimiento y actividades.
 - Amplía el repertorio de representaciones visuales para vocabulario de Comunicación, Matemática, Ciencia y Tecnología y Personal Social.
 - Incluye una función de respaldo por categorías para evitar el símbolo genérico de rompecabezas en la mayoría de palabras.
 - Mejora la accesibilidad con descripciones de las representaciones visuales.
-- Conserva el panel del docente, los reportes, la lectoescritura con audio y las demás actividades de la versión anterior.
+- El pupiletras registra el avance al completar todas las palabras.
+- Crucigramas, comprensión lectora e imágenes registran puntajes aunque no se respondan todas correctamente.
+- Evita duplicar el registro al pulsar varias veces el botón de comprobar durante el mismo intento.
+- Mantiene reportes por estudiante, filtros, exportación CSV, audio y ficha imprimible.
 
 INSTALACIÓN
 1. Descomprime el ZIP.
