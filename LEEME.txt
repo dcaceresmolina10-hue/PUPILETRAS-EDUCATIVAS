@@ -1,29 +1,15 @@
-PUPILETRAS EDUCATIVAS – VERSIÓN AMPLIADA
+PUPILETRAS EDUCATIVAS — VERSIÓN 10
 
-Incluye: pupiletras por ciclos III, IV y V; actividades de pistas tipo crucigrama con audio; lectoescritura con lectura en voz alta y preguntas de comprensión; asociación de imágenes y palabras; seguimiento de avances guardado localmente en el dispositivo; e impresión de fichas desde el navegador (elige Guardar como PDF).
+Mejora: actividad “Relaciona la imagen con la palabra”.
+- Amplía el repertorio de representaciones visuales para vocabulario de Comunicación, Matemática, Ciencia y Tecnología y Personal Social.
+- Incluye una función de respaldo por categorías para evitar el símbolo genérico de rompecabezas en la mayoría de palabras.
+- Mejora la accesibilidad con descripciones de las representaciones visuales.
+- Conserva el panel del docente, los reportes, la lectoescritura con audio y las demás actividades de la versión anterior.
 
-PUBLICAR EN GITHUB PAGES
-1. Descomprime este ZIP en tu computadora.
-2. Entra a tu repositorio de GitHub y abre la pestaña Code.
-3. Sube/reemplaza index.html, features.js, sw.js, manifest.json y portada.png en la raíz del repositorio.
-4. Pulsa Commit changes.
-5. Abre la página publicada y actualízala. Si ves la versión anterior, cierra la pestaña y vuelve a abrirla.
+INSTALACIÓN
+1. Descomprime el ZIP.
+2. Sube los archivos directamente a la raíz del repositorio de GitHub Pages y reemplaza los existentes.
+3. Pulsa Commit changes.
+4. Recarga el aplicativo. Si sigue la versión anterior, cierra la pestaña y vuelve a abrirla.
 
-FICHAS PDF
-Pulsa “Ficha imprimible” y en el cuadro de impresión del navegador elige “Guardar como PDF”.
-
-AVANCES
-El historial se guarda solo en el navegador y dispositivo donde se usa. No es una base de datos compartida entre dispositivos ni identifica automáticamente a cada estudiante.
-
-AUDIO
-La lectura usa las voces disponibles en el navegador/dispositivo. Se recomienda Chrome actualizado y tener el volumen activado.
-
-
-NUEVO EN LA VERSION 9 - PANEL DEL DOCENTE
-- Registra y selecciona estudiante por nombre y grado.
-- Los resultados nuevos se asocian al estudiante seleccionado.
-- Filtra reportes por estudiante, área y ciclo.
-- Consulta cantidad de actividades y porcentaje de aciertos.
-- Descarga un reporte CSV compatible con Excel o imprime el informe.
-
-IMPORTANTE: la información se guarda localmente en este navegador/dispositivo. Los resultados antiguos que no tenían estudiante registrado aparecen como “Sin registrar”. No se sincroniza con otros dispositivos.
+NOTA: las representaciones son emojis, no fotografías individuales. El progreso se guarda localmente en el navegador y dispositivo.

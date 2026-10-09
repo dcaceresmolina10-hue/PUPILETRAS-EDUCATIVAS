@@ -1,4 +1,4 @@
-const CACHE = "pupiletras-panel-docente-v9";
+const CACHE = "pupiletras-panel-docente-v10";
 const FILES = ["./", "./index.html", "./manifest.json", "./portada.png", "./features.js"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
