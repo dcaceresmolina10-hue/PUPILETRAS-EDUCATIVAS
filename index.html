@@ -18,7 +18,7 @@ button{cursor:pointer;transition:transform .12s,filter .12s}button:hover{filter:
 .progressrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#dcfce7;border-radius:14px;padding:10px 12px;margin-top:12px}.progressrow strong{white-space:nowrap}.progress{height:13px;flex:1;min-width:100px;background:#bbf7d0;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#16a34a,#a3e635);transition:width .3s}.stat{background:white;padding:6px 10px;border-radius:10px;font-weight:900}.feedback{min-height:25px;font-weight:800;color:#6d28d9;margin:10px 2px 0}.teacher textarea{width:100%;min-height:90px;border:2px solid #c7d2fe;padding:10px}.teacher button{background:#6d28d9;color:white;border:0;padding:11px 14px;font-weight:900}.quizopts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quizopts button{background:#ede9fe;color:#4c1d95;border:2px solid #c4b5fd;padding:10px;font-weight:800}.quizopts button.correct{background:#dcfce7;border-color:#22c55e}.quizopts button.wrong{background:#fee2e2;border-color:#ef4444}.foot{text-align:center;color:#64748b;padding:14px;font-size:12px}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.hero img{height:145px}.layout{grid-template-columns:1fr}.gamegrid{grid-template-columns:1fr}.wordlist{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none}.actions{grid-template-columns:repeat(2,1fr)}.cell{font-size:clamp(12px,3vw,18px)}}
 @media(max-width:450px){main{padding:8px}.panel{padding:10px}.wordlist{grid-template-columns:1fr 1fr}.welcome .mascot{font-size:44px}.actions button{font-size:13px}.grid{gap:2px}.cell{border-radius:4px}}
-#wordList{display:grid!important;visibility:visible!important;opacity:1!important;min-height:80px}#wordList .word{display:flex!important;color:#172554!important;background:#fff!important}#wordList .word span{color:#172554!important}.cell{user-select:none;-webkit-user-select:none;touch-action:manipulation;cursor:pointer;pointer-events:auto}.cell.selected{background:#fde047!important}.cell.found{background:#86efac!important}</style></head>
+#wordList{display:grid!important;visibility:visible!important;opacity:1!important;min-height:80px}#wordList .word{display:flex!important;color:#172554!important;background:#fff!important}#wordList .word span{color:#172554!important}.cell{user-select:none;-webkit-user-select:none;touch-action:manipulation;cursor:pointer;pointer-events:auto}.cell.selected{background:#fde047!important}.cell.found{background:#86efac!important}.grid .cell.found{background:#86efac!important;color:#14532d!important;border:2px solid #16a34a!important;box-shadow:0 0 0 1px #16a34a inset!important}.grid .cell.selected{background:#fde047!important;color:#172554!important}</style></head>
 <body>
 <header><div class="brand"><div class="emoji">🔎🌈</div><div><h1>Pupiletras Educativas</h1><div class="subtitle">¡Descubre, busca, lee y aprende jugando!</div></div></div></header>
 <main>
@@ -80,7 +80,11 @@ function start(words=null){
 }
 function render(){
  $("grid").style.gridTemplateColumns=`repeat(${game.size},minmax(0,1fr))`;$("grid").innerHTML="";
- for(let r=0;r<game.size;r++)for(let c=0;c<game.size;c++){let b=document.createElement("button");b.type="button";b.className="cell";b.textContent=game.grid[r][c];b.dataset.r=r;b.dataset.c=c;b.setAttribute("aria-label",`Fila ${r+1}, columna ${c+1}, letra ${b.textContent}`);b.onclick=()=>choose(r,c);$("grid").appendChild(b)}
+ for(let r=0;r<game.size;r++)for(let c=0;c<game.size;c++){
+  let b=document.createElement("button");b.type="button";b.className="cell";b.textContent=game.grid[r][c];b.dataset.r=r;b.dataset.c=c;b.setAttribute("aria-label",`Fila ${r+1}, columna ${c+1}, letra ${b.textContent}`);b.onclick=()=>choose(r,c);
+  for(const p of game.placements){if(game.found.has(p.word)){for(let i=0;i<p.word.length;i++){if(p.r+p.dr*i===r && p.c+p.dc*i===c){b.classList.add("found");break}}}}
+  $("grid").appendChild(b)
+}
  $("wordList").innerHTML="";game.words.forEach(w=>{let row=document.createElement("div");row.className="word"+(game.found.has(w)?" found":"");row.dataset.word=w;let sound=document.createElement("button");sound.className="sound";sound.textContent="🔊";sound.title="Escuchar "+w;sound.onclick=()=>speak([w]);let text=document.createElement("span");text.textContent=w;row.append(sound,text);if(game.found.has(w)){let check=document.createElement("span");check.className="check";check.textContent="✓";row.append(check)}$("wordList").append(row)});
  $("wordCount").textContent=`(${game.words.length})`;$("gameTitle").textContent=(game.custom?"✏️ Pupiletras personalizada":({"Comunicación":"📚","Matemática":"🔢","Ciencia y Tecnología":"🔬","Personal Social":"🌎"}[area]+" "+area+" · "+topic));$("badge").textContent=labels[cycle];
  $("score").textContent=game.score;$("foundCount").textContent=game.found.size;$("total").textContent=game.words.length;$("bar").style.width=(game.found.size/game.words.length*100)+"%";makeQuiz();
@@ -122,12 +126,6 @@ function choose(r,c){
  const hit=placement.word;
  game.found.add(hit);
  game.score+=10;
- for(let i=0;i<hit.length;i++){
-   const rr=placement.r+placement.dr*i;
-   const cc=placement.c+placement.dc*i;
-   const letterCell=document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`);
-   if(letterCell) letterCell.classList.add("found");
- }
  render();
  $("feedback").textContent="🌟 ¡Muy bien! Encontraste "+hit+".";
  if(game.found.size===game.words.length){
