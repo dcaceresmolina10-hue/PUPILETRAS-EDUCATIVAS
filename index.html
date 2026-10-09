@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b6e4f">
+<meta name="description" content="Pupiletras Educativas para III, IV y V ciclo">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Pupiletras Educativas</title>
+<style>
+:root{--green:#0b6e4f;--green2:#159957;--gold:#f5b700;--cream:#fffaf0;--ink:#18332a;--soft:#eef7f2;--red:#c94c4c}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(135deg,#eef9f2,#fffaf0);color:var(--ink)}
+header{background:linear-gradient(120deg,var(--green),#159957);color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5;box-shadow:0 3px 12px #0002}
+h1{font-size:clamp(22px,5vw,34px);margin:0 0 4px}.sub{opacity:.92;font-size:14px}
+main{max-width:1100px;margin:auto;padding:14px}
+.panel{background:#fff;border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 5px 20px #174b3315}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
+label{font-size:12px;font-weight:700;display:block;margin-bottom:4px}select,input,button,textarea{width:100%;padding:11px;border:1px solid #c9ddd4;border-radius:11px;font:inherit}
+button{border:0;background:var(--green);color:#fff;font-weight:800;cursor:pointer}button.alt{background:#e6f2ec;color:var(--green)}button.gold{background:var(--gold);color:#342700}button.danger{background:var(--red)}
+.word-layout{display:grid;grid-template-columns:minmax(220px,1fr) minmax(260px,1.4fr);gap:16px;align-items:start}
+.words{display:flex;flex-wrap:wrap;gap:8px}.word{padding:9px 11px;border-radius:10px;background:#edf5f1;border:2px solid transparent;font-weight:800}.word.found{background:#d9f5df;border-color:#159957;text-decoration:line-through;color:#17663f}
+.grid-wrap{display:flex;justify-content:center;overflow:auto;padding:6px}
+.grid{display:grid;gap:3px;user-select:none;touch-action:none;background:#d6e9df;padding:5px;border-radius:12px}
+.cell{width:clamp(30px,8vw,48px);height:clamp(30px,8vw,48px);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:7px;font-size:clamp(14px,3.6vw,21px);font-weight:900;cursor:pointer}
+.cell.selected{background:#bfead0}.cell.found{background:#8ed6ad;color:#063d29}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--soft);padding:8px 12px;border-radius:10px;font-weight:800}
+.notice{padding:10px;border-radius:10px;background:#fff8d8;border-left:5px solid var(--gold);font-size:14px}
+.small{font-size:12px;color:#557268}
+.teacher textarea{min-height:110px;resize:vertical}
+.quiz{display:grid;gap:10px}.option{background:#f1f6f3;color:var(--ink);border:1px solid #cfe1d8;text-align:left}.option.correct{background:#cdeed8;border-color:#159957}.option.wrong{background:#f7d7d7;border-color:#c94c4c}
+footer{text-align:center;padding:20px;color:#60766d;font-size:12px}
+@media(max-width:760px){.word-layout{grid-template-columns:1fr}.panel{padding:11px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔎 Pupiletras Educativas</h1>
+  <div class="sub">Leo · encuentro · aprendo · desafío mi mente</div>
+</header>
+<main>
+<section class="panel">
+ <div class="controls">
+  <div><label>Ciclo</label><select id="cycle"><option value="III">III ciclo · 1.º–2.º</option><option value="IV">IV ciclo · 3.º–4.º</option><option value="V">V ciclo · 5.º–6.º</option></select></div>
+  <div><label>Área</label><select id="area"></select></div>
+  <div><label>Nivel</label><select id="level"><option value="1">Nivel 1 · Inicial</option><option value="2">Nivel 2 · Intermedio</option><option value="3">Nivel 3 · Desafío</option></select></div>
+  <div><label>Tema</label><select id="topic"></select></div>
+ </div>
+ <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+   <button id="newGame">🎲 Nueva pupiletras</button>
+   <button class="alt" id="hint">💡 Pista</button>
+   <button class="gold" id="readWords">🔊 Leer palabras</button>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="stats">
+  <div class="stat">⭐ Puntos: <span id="score">0</span></div>
+  <div class="stat">✅ Encontradas: <span id="foundCount">0</span>/<span id="totalCount">0</span></div>
+  <div class="stat">⏱️ Tiempo: <span id="timer">0</span>s</div>
+ </div>
+ <div class="notice" style="margin-top:10px">
+  <b>Cómo jugar:</b> toca la primera letra y luego la última. También puedes arrastrar sobre las letras. Busca las palabras de la lista.
+ </div>
+</section>
+
+<section class="panel word-layout">
+ <div>
+   <h2 id="gameTitle" style="margin-top:0">Pupiletras</h2>
+   <div id="wordList" class="words"></div>
+   <p class="small">Direcciones posibles: horizontal, vertical y diagonal; también pueden aparecer al revés en niveles superiores.</p>
+ </div>
+ <div class="grid-wrap"><div id="grid" class="grid"></div></div>
+</section>
+
+<section class="panel teacher">
+ <h2>👩‍🏫 Modo docente · crear una pupiletras</h2>
+ <p class="small">Escribe entre 5 y 15 palabras, una por línea. El aplicativo generará automáticamente una nueva cuadrícula.</p>
+ <textarea id="customWords" placeholder="PALTA&#10;LÚCUMA&#10;AGUA&#10;RÍO&#10;SEMILLA"></textarea>
+ <button id="generateCustom" style="margin-top:8px">✨ Generar con mis palabras</button>
+</section>
+
+<section class="panel">
+ <h2>📚 Mini desafío de comprensión</h2>
+ <div id="quiz" class="quiz"></div>
+</section>
+</main>
+<footer>Diseñado para el aula multigrado rural · III, IV y V ciclo · Funciona sin conexión después de instalarse.</footer>
+
+<script>
+const BANK={
+ III:{
+  "Comunicación":{
+   "Vocales y palabras":["MAMA","MESA","MIMO","MONO","MULA","MIEL","MUELA","MUNO"],
+   "Familia y escuela":["MAMA","PAPA","MAESTRO","MESA","MOCHILA","MUÑECA","MESA","AULA"],
+   "Valle Fortaleza":["AGUA","RIO","PALTA","LUCUMA","TIERRA","PLANTA","SEMILLA","CHACRA"]
+  },
+  "Ciencia y Tecnología":{
+   "Seres vivos":["PLANTA","ANIMAL","AGUA","AIRE","TIERRA","SOL","SEMILLA","RAIZ"],
+   "Cuidamos el agua":["AGUA","RIO","AHORRO","CUIDAR","GOTA","VIDA","GRIFO","VALLE"]
+  },
+  "Personal Social":{"Mi comunidad":["FAMILIA","ESCUELA","POCOR","PARARIN","COMUNIDAD","VALLE","TRABAJO","RESPETO"]},
+  "Matemática":{"Números":["UNO","DOS","TRES","CUATRO","CINCO","DIEZ","SUMA","RESTA"]}
+ },
+ IV:{
+  "Comunicación":{"Palabras y textos":["SUSTANTIVO","ADJETIVO","VERBO","ORACION","LECTURA","IDEA","TEXTO","MENSAJE"]},
+  "Ciencia y Tecnología":{"Recursos naturales":["AGUA","SUELO","AIRE","PLANTA","ANIMAL","ENERGIA","RECURSO","CUIDADO"]},
+  "Personal Social":{"Identidad y comunidad":["IDENTIDAD","CULTURA","COMUNIDAD","FAMILIA","TRADICION","RESPETO","DERECHO","DEBER"]},
+  "Matemática":{"Operaciones":["SUMA","RESTA","MULTIPLICACION","DIVISION","FRACCION","DECIMAL","PROBLEMA","PATRON"]}
+ },
+ V:{
+  "Comunicación":{"Lengua y comprensión":["COMUNICACION","ARGUMENTO","IDEA","PARRAFO","TEXTO","INFERENCIA","ADJETIVO","VERBO"]},
+  "Ciencia y Tecnología":{"Ambiente":["ATMOSFERA","OZONO","CLIMA","AGUA","ECOSISTEMA","BIODIVERSIDAD","RECICLAJE","ENERGIA"]},
+  "Personal Social":{"Ciudadanía":["CIUDADANIA","PARTICIPACION","DEMOCRACIA","DERECHOS","RESPONSABILIDAD","IDENTIDAD","HISTORIA","PATRIMONIO"]},
+  "Matemática":{"Números y geometría":["FRACCION","DECIMAL","PROPORCION","PERIMETRO","AREA","ANGULO","FIGURA","PORCENTAJE"]}
+ }
+};
+
+let state={words:[],found:new Set(),size:10,grid:[],placements:[],start:null,score:0,time:0,timer:null};
+
+const $=id=>document.getElementById(id);
+function normalize(s){return s.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toUpperCase().replace(/[^A-ZÑ]/g,"")}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function dirs(level){return level==="3"?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[1,1]]:[[0,1],[1,0],[1,1],[1,-1]]}
+function canPlace(word,r,c,dr,dc,size,g){
+ for(let i=0;i<word.length;i++){let rr=r+dr*i,cc=c+dc*i;if(rr<0||cc<0||rr>=size||cc>=size)return false;if(g[rr][cc]!==""&&g[rr][cc]!==word[i])return false}
+ return true
+}
+function build(words,level){
+ let max=Math.max(...words.map(w=>w.length),6); let size=Math.max(9,Math.min(14,max+3)); if(level==="3")size=Math.max(size,12);
+ let g=Array.from({length:size},()=>Array(size).fill("")); let placements=[];
+ for(const word of shuffle(words)){
+   let placed=false;
+   for(let t=0;t<700&&!placed;t++){
+    let d=shuffle(dirs(level))[0],r=Math.floor(Math.random()*size),c=Math.floor(Math.random()*size);
+    if(canPlace(word,r,c,d[0],d[1],size,g)){for(let i=0;i<word.length;i++)g[r+d[0]*i][c+d[1]*i]=word[i];placements.push({word,r,c,dr:d[0],dc:d[1]});placed=true}
+   }
+   if(!placed) return build(words,level);
+ }
+ const letters="AEIOULMNPRS TCDGFBVH".replace(/ /g,"");
+ for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(!g[r][c])g[r][c]=letters[Math.floor(Math.random()*letters.length)];
+ return {g,placements,size}
+}
+function setOptions(){
+ const cyc=$("cycle").value, data=BANK[cyc];
+ $("area").innerHTML=Object.keys(data).map(x=>`<option>${x}</option>`).join("");
+ setTopics(); newGame();
+}
+function setTopics(){
+ const data=BANK[$("cycle").value][$("area").value];
+ $("topic").innerHTML=Object.keys(data).map(x=>`<option>${x}</option>`).join("");
+}
+function newGame(custom=null){
+ clearInterval(state.timer);state.time=0;$("timer").textContent=0;
+ let words=custom?custom.map(normalize).filter(x=>x.length>=2):BANK[$("cycle").value][$("area").value][$("topic").value].map(normalize);
+ words=[...new Set(words)].slice(0,15); if(!words.length)return;
+ state.words=words;state.found=new Set();state.score=0;state.start=null;
+ let built=build(words,$("level").value);Object.assign(state,{grid:built.g,placements:built.placements,size:built.size});
+ render();
+ state.timer=setInterval(()=>{$("timer").textContent=++state.time},1000);
+}
+function render(){
+ $("score").textContent=state.score;$("foundCount").textContent=state.found.size;$("totalCount").textContent=state.words.length;
+ $("grid").style.gridTemplateColumns=`repeat(${state.size},auto)`;$("grid").innerHTML="";
+ for(let r=0;r<state.size;r++)for(let c=0;c<state.size;c++){
+   let b=document.createElement("div");b.className="cell";b.textContent=state.grid[r][c];b.dataset.r=r;b.dataset.c=c;
+   b.onpointerdown=e=>selectStart(+b.dataset.r,+b.dataset.c,e);
+   b.onpointerup=e=>selectEnd(+b.dataset.r,+b.dataset.c,e);
+   $("grid").appendChild(b);
+ }
+ $("wordList").innerHTML=state.words.map(w=>`<span class="word ${state.found.has(w)?"found":""}" id="w-${w}">${w}</span>`).join("");
+ $("gameTitle").textContent=`${$("cycle").value} · ${$("area").value} · ${$("topic").value}`;
+ renderQuiz();
+}
+function cell(r,c){return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`)}
+function selectStart(r,c,e){state.start={r,c};cell(r,c)?.classList.add("selected")}
+function selectEnd(r,c,e){
+ if(!state.start)return;let s=state.start;state.start=null;
+ document.querySelectorAll(".cell.selected").forEach(x=>x.classList.remove("selected"));
+ let dr=Math.sign(r-s.r),dc=Math.sign(c-s.c),len=Math.max(Math.abs(r-s.r),Math.abs(c-s.c))+1;
+ if(!(dr===0||dc===0||Math.abs(r-s.r)===Math.abs(c-s.c)))return;
+ let text="";for(let i=0;i<len;i++)text+=state.grid[s.r+dr*i][s.c+dc*i];
+ let rev=text.split("").reverse().join(""), hit=state.words.find(w=>!state.found.has(w)&&(w===text||w===rev));
+ if(hit){state.found.add(hit);state.score+=10;for(let i=0;i<len;i++)cell(s.r+dr*i,s.c+dc*i)?.classList.add("found");render();if(state.found.size===state.words.length){state.score+=30;alert("🎉 ¡Excelente! Encontraste todas las palabras.");}}
+}
+function renderQuiz(){
+ const area=$("area").value, cyc=$("cycle").value;
+ let q;
+ if(area==="Comunicación")q={t:"¿Qué hacemos primero para aprender con una pupiletras?",o:["Reconocer y leer las palabras","Borrar la cuadrícula","Contar las letras sin leer"],a:0};
+ else if(area==="Ciencia y Tecnología")q={t:"¿Cuál es un recurso natural que debemos cuidar en Pocor?",o:["Agua","Basura","Humo"],a:0};
+ else if(area==="Personal Social")q={t:"¿Qué ayuda a convivir mejor en la comunidad?",o:["Respeto","Desorden","Descuido"],a:0};
+ else q={t:"¿Qué operación permite juntar cantidades?",o:["Suma","Resta","División"],a:0};
+ $("quiz").innerHTML=`<b>${q.t}</b>`+q.o.map((x,i)=>`<button class="option" onclick="answerQuiz(this,${i},${q.a})">${x}</button>`).join("");
+}
+window.answerQuiz=(el,i,a)=>{document.querySelectorAll(".option").forEach(x=>x.disabled=true);el.classList.add(i===a?"correct":"wrong");if(i===a)state.score+=5;$("score").textContent=state.score}
+$("cycle").onchange=setOptions;$("area").onchange=()=>{setTopics();newGame()};$("topic").onchange=()=>newGame();$("level").onchange=()=>newGame();$("newGame").onclick=()=>newGame();
+$("hint").onclick=()=>{let left=state.words.find(w=>!state.found.has(w));if(!left)return;let p=state.placements.find(x=>x.word===left);if(p){cell(p.r,p.c)?.classList.add("selected");setTimeout(()=>cell(p.r,p.c)?.classList.remove("selected"),1200)}};
+$("readWords").onclick=()=>{if(!("speechSynthesis"in window))return alert("Tu dispositivo no admite lectura de voz.");speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(state.words.join(", "));u.lang="es-PE";speechSynthesis.speak(u)};
+$("generateCustom").onclick=()=>{let w=$("customWords").value.split(/\\n|,/).map(x=>x.trim()).filter(Boolean);if(w.length<5)return alert("Escribe al menos 5 palabras.");newGame(w)};
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+setOptions();
+</script>
+</body>
+</html>
