@@ -1,154 +1,113 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b6e4f">
-<meta name="description" content="Pupiletras Educativas para III, IV y V ciclo">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<title>Pupiletras Educativas</title>
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#6d28d9"><link rel="manifest" href="manifest.json"><title>Pupiletras Educativas</title>
 <style>
-:root{--green:#0b6e4f;--green2:#159957;--gold:#f5b700;--cream:#fffaf0;--ink:#18332a;--soft:#eef7f2;--red:#c94c4c}
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(135deg,#eef9f2,#fffaf0);color:var(--ink)}
-header{background:linear-gradient(120deg,var(--green),#159957);color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5;box-shadow:0 3px 12px #0002}
-h1{font-size:clamp(22px,5vw,34px);margin:0 0 4px}.sub{opacity:.92;font-size:14px}
-main{max-width:1100px;margin:auto;padding:14px}
-.panel{background:#fff;border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 5px 20px #174b3315}
-.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
-label{font-size:12px;font-weight:700;display:block;margin-bottom:4px}select,input,button,textarea{width:100%;padding:11px;border:1px solid #c9ddd4;border-radius:11px;font:inherit}
-button{border:0;background:var(--green);color:#fff;font-weight:800;cursor:pointer}button.alt{background:#e6f2ec;color:var(--green)}button.gold{background:var(--gold);color:#342700}button.danger{background:var(--red)}
-.word-layout{display:grid;grid-template-columns:minmax(220px,1fr) minmax(260px,1.4fr);gap:16px;align-items:start}
-.words{display:flex;flex-wrap:wrap;gap:8px}.word{padding:9px 11px;border-radius:10px;background:#edf5f1;border:2px solid transparent;font-weight:800}.word.found{background:#d9f5df;border-color:#159957;text-decoration:line-through;color:#17663f}
-.grid-wrap{display:flex;justify-content:center;overflow:auto;padding:6px}
-.grid{display:grid;gap:3px;user-select:none;touch-action:none;background:#d6e9df;padding:5px;border-radius:12px}
-.cell{width:clamp(27px,6.5vw,44px);height:clamp(27px,6.5vw,44px);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:7px;font-size:clamp(14px,3.6vw,21px);font-weight:900;cursor:pointer}
-.cell.selected{background:#ffe58a!important;outline:2px solid #c38b00}.cell.hint{background:#b8d9ff!important;outline:2px solid #3977bf}.cell.found{background:#8ed6ad;color:#063d29}
-.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--soft);padding:8px 12px;border-radius:10px;font-weight:800}
-.notice{padding:10px;border-radius:10px;background:#fff8d8;border-left:5px solid var(--gold);font-size:14px}
-.small{font-size:12px;color:#557268}
-.teacher textarea{min-height:110px;resize:vertical}
-.quiz{display:grid;gap:10px}.option{background:#f1f6f3;color:var(--ink);border:1px solid #cfe1d8;text-align:left}.option.correct{background:#cdeed8;border-color:#159957}.option.wrong{background:#f7d7d7;border-color:#c94c4c}
-footer{text-align:center;padding:20px;color:#60766d;font-size:12px}
-@media(max-width:760px){.word-layout{grid-template-columns:1fr}.panel{padding:11px}}
-</style>
-</head>
+:root{--ink:#172554;--pink:#ff4f91;--purple:#7138d7;--blue:#1687e8;--green:#14a76c;--orange:#ff8a00;--yellow:#ffd43b;--bg:#f4f7ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,'Trebuchet MS',sans-serif;color:var(--ink);background:radial-gradient(circle at 5% 5%,#fff0f6,transparent 30%),radial-gradient(circle at 90% 15%,#e0f2fe,transparent 30%),linear-gradient(135deg,#f8fbff,#f5f3ff)}
+header{padding:14px max(14px,calc((100vw - 1250px)/2));background:linear-gradient(115deg,#4f46e5,#a21caf 55%,#f43f5e);color:white;box-shadow:0 5px 20px #312e8130}
+.brand{display:flex;align-items:center;gap:14px}.brand .emoji{font-size:clamp(38px,6vw,64px);filter:drop-shadow(0 4px 0 #ffffff50)}h1{font-size:clamp(25px,4vw,42px);line-height:1.05;margin:0;text-shadow:0 3px #4c1d95}.subtitle{margin-top:6px;font-weight:700;color:#fff4b8}
+main{max-width:1250px;margin:auto;padding:14px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-bottom:14px}.hero img{width:100%;height:190px;object-fit:cover;object-position:center 30%;border-radius:20px;border:4px solid white;box-shadow:0 8px 24px #4338ca20}.welcome{background:linear-gradient(135deg,#fef3c7,#ffedd5);border:2px solid white;border-radius:20px;padding:16px;display:flex;align-items:center;gap:14px}.welcome .mascot{font-size:62px}.welcome h2{margin:0 0 6px;color:#9d174d}.welcome p{margin:0;line-height:1.45}
+.layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:14px;align-items:start}.panel{background:#ffffffed;border:2px solid white;border-radius:20px;padding:14px;box-shadow:0 7px 24px #1e1b4b10;margin-bottom:14px}.panel h2{margin:0 0 12px;font-size:19px}.section-title{display:flex;align-items:center;gap:9px}.section-title span{font-size:26px}
+.controls{display:grid;gap:12px}label{display:block;font-weight:900;font-size:13px;margin-bottom:5px}select,input,textarea,button{font:inherit;border-radius:12px}select{width:100%;padding:11px;border:2px solid #c7d2fe;background:#fff;color:#172554;font-weight:700}
+.cycles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.cycle{border:0;padding:12px 3px;color:white;background:var(--green);box-shadow:inset 0 -4px #0002}.cycle:nth-child(2){background:var(--blue)}.cycle:nth-child(3){background:var(--purple)}.cycle.active{outline:4px solid var(--yellow);transform:translateY(-2px)}
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:7px}.area{border:0;color:white;padding:12px 6px;font-size:13px;background:var(--pink);box-shadow:inset 0 -4px #0002}.area:nth-child(2){background:var(--green)}.area:nth-child(3){background:var(--orange)}.area:nth-child(4){background:var(--blue)}.area.active{outline:4px solid var(--yellow)}
+button{cursor:pointer;transition:transform .12s,filter .12s}button:hover{filter:brightness(1.05);transform:translateY(-1px)}button:focus-visible,select:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+.gamehead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(100deg,#f43f5e,#ec4899);color:white;padding:13px 16px;border-radius:16px;margin-bottom:12px}.gamehead h2{margin:0;font-size:clamp(18px,3vw,25px)}.cyclebadge{background:#fff;color:#6d28d9;padding:7px 10px;border-radius:12px;font-weight:900}
+.instructions{display:flex;align-items:center;gap:12px;background:#fff7cc;padding:12px;border-radius:14px;margin-bottom:12px}.instructions .big{font-size:35px}.instructions p{margin:0;font-size:14px}
+.gamegrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(185px,.75fr);gap:12px;align-items:start}.grid-wrap{overflow:auto;padding:5px;background:#dcfce7;border-radius:15px;border:2px solid #bbf7d0}.grid{display:grid;gap:3px;min-width:290px}.cell{aspect-ratio:1/1;min-width:0;padding:0;display:flex;justify-content:center;align-items:center;border:1px solid #d1d5db;background:#fff;color:#172554!important;font-weight:950;font-size:clamp(12px,1.7vw,19px);box-shadow:0 2px #cbd5e1;border-radius:6px;touch-action:manipulation}.cell.selected{background:#fde047!important;outline:3px solid #ca8a04;z-index:1}.cell.hint{background:#bfdbfe!important;outline:2px solid #2563eb}.cell.found{background:#86efac!important;color:#14532d!important;border-color:#22c55e}.wordbox{border:2px solid #fecdd3;border-radius:14px;overflow:hidden}.wordbox h3{margin:0;background:var(--pink);color:white;padding:10px;font-size:16px}.wordlist{display:grid;gap:5px;padding:8px;max-height:460px;overflow:auto;background:#fffaf0}.word{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:9px;background:#fff;border:1px solid #fde68a;font-weight:900;font-size:13px}.word .sound{border:0;background:#dbeafe;color:#1d4ed8;border-radius:8px;padding:3px 6px}.word.found{background:#dcfce7;text-decoration:line-through;border-color:#4ade80}.word .check{margin-left:auto;color:#16a34a}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.action{border:0;color:white;padding:12px 5px;font-weight:900;box-shadow:inset 0 -4px #0002}.action:nth-child(1){background:var(--green)}.action:nth-child(2){background:var(--blue)}.action:nth-child(3){background:var(--orange)}.action:nth-child(4){background:#ef4444}
+.progressrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#dcfce7;border-radius:14px;padding:10px 12px;margin-top:12px}.progressrow strong{white-space:nowrap}.progress{height:13px;flex:1;min-width:100px;background:#bbf7d0;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#16a34a,#a3e635);transition:width .3s}.stat{background:white;padding:6px 10px;border-radius:10px;font-weight:900}.feedback{min-height:25px;font-weight:800;color:#6d28d9;margin:10px 2px 0}.teacher textarea{width:100%;min-height:90px;border:2px solid #c7d2fe;padding:10px}.teacher button{background:#6d28d9;color:white;border:0;padding:11px 14px;font-weight:900}.quizopts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quizopts button{background:#ede9fe;color:#4c1d95;border:2px solid #c4b5fd;padding:10px;font-weight:800}.quizopts button.correct{background:#dcfce7;border-color:#22c55e}.quizopts button.wrong{background:#fee2e2;border-color:#ef4444}.foot{text-align:center;color:#64748b;padding:14px;font-size:12px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.hero img{height:145px}.layout{grid-template-columns:1fr}.gamegrid{grid-template-columns:1fr}.wordlist{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none}.actions{grid-template-columns:repeat(2,1fr)}.cell{font-size:clamp(12px,3vw,18px)}}
+@media(max-width:450px){main{padding:8px}.panel{padding:10px}.wordlist{grid-template-columns:1fr 1fr}.welcome .mascot{font-size:44px}.actions button{font-size:13px}.grid{gap:2px}.cell{border-radius:4px}}
+</style></head>
 <body>
-<header>
-  <h1>🔎 Pupiletras Educativas</h1>
-  <div class="sub">Leo · encuentro · aprendo · desafío mi mente</div>
-</header>
+<header><div class="brand"><div class="emoji">🔎🌈</div><div><h1>Pupiletras Educativas</h1><div class="subtitle">¡Descubre, busca, lee y aprende jugando!</div></div></div></header>
 <main>
-<section class="panel">
- <div class="controls">
-  <div><label>Ciclo</label><select id="cycle"><option value="III">III ciclo · 1.º–2.º</option><option value="IV">IV ciclo · 3.º–4.º</option><option value="V">V ciclo · 5.º–6.º</option></select></div>
-  <div><label>Área</label><select id="area"></select></div>
-  <div><label>Nivel</label><select id="level"><option value="1">Nivel 1 · Inicial</option><option value="2">Nivel 2 · Intermedio</option><option value="3">Nivel 3 · Desafío</option></select></div>
-  <div><label>Tema</label><select id="topic"></select></div>
+<div class="hero">
+ <div class="welcome"><div class="mascot">🧒🏽📚</div><div><h2>¡Hola, explorador!</h2><p>Encuentra palabras, aprende nuevas ideas y gana estrellas. ¡Vamos a descubrir juntos!</p></div></div>
+ <img src="portada.png" alt="Ilustración colorida de niños aprendiendo con pupiletras y naturaleza" onerror="this.style.display='none'">
+</div>
+<div class="layout">
+<aside>
+ <section class="panel"><h2 class="section-title"><span>🎒</span> 1. Elige tu ciclo</h2><div class="cycles"><button class="cycle active" data-cycle="III">III ciclo<br>1.º–2.º</button><button class="cycle" data-cycle="IV">IV ciclo<br>3.º–4.º</button><button class="cycle" data-cycle="V">V ciclo<br>5.º–6.º</button></div></section>
+ <section class="panel"><h2 class="section-title"><span>🧭</span> 2. Elige el área</h2><div class="areas"><button class="area active" data-area="Comunicación">📚 Comunicación</button><button class="area" data-area="Matemática">🔢 Matemática</button><button class="area" data-area="Ciencia y Tecnología">🔬 Ciencia y Tecnología</button><button class="area" data-area="Personal Social">🌎 Personal Social</button></div></section>
+ <section class="panel"><h2 class="section-title"><span>🗂️</span> 3. Elige el tema</h2><label for="topic">Temas disponibles</label><select id="topic"></select><label for="level" style="margin-top:12px">Dificultad</label><select id="level"><option value="1">🌱 Nivel 1 · Fácil</option><option value="2">🌟 Nivel 2 · Medio</option><option value="3">🚀 Nivel 3 · Desafío</option></select></section>
+ <section class="panel"><h2 class="section-title"><span>🧑‍🏫</span> Modo docente</h2><p style="font-size:13px">Escribe tus propias palabras (5 a 15), una por línea.</p><textarea id="customWords" placeholder="PALTA&#10;LUCUMA&#10;AGUA&#10;SEMILLA&#10;RIO"></textarea><button id="makeCustom" style="margin-top:8px;width:100%">✨ Crear mi pupiletras</button></section>
+</aside>
+<section>
+ <div class="gamehead"><h2 id="gameTitle">📚 Comunicación · Vocales y palabras</h2><span class="cyclebadge" id="badge">III ciclo · 1.º–2.º</span></div>
+ <div class="instructions"><div class="big">💡</div><p><b>¿Cómo jugar?</b><br>Toca la primera letra de una palabra y luego la última. Busca las palabras en horizontal, vertical o diagonal. ¡Cada palabra vale 10 puntos!</p></div>
+ <div class="gamegrid">
+  <div class="grid-wrap"><div class="grid" id="grid" aria-label="Cuadrícula de letras"></div></div>
+  <div class="wordbox"><h3>📝 Palabras por encontrar <span id="wordCount"></span></h3><div class="wordlist" id="wordList"></div></div>
  </div>
- <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-   <button id="newGame">🎲 Nueva pupiletras</button>
-   <button class="alt" id="hint">💡 Pista</button>
-   <button class="gold" id="readWords">🔊 Leer palabras</button>
- </div>
+ <div class="actions"><button class="action" id="verify">🔍 Verificar</button><button class="action" id="hint">💡 Pista</button><button class="action" id="speak">🔊 Leer palabras</button><button class="action" id="new">🎲 Nueva sopa</button></div>
+ <div class="feedback" id="feedback" role="status">¡Elige una palabra y empieza!</div>
+ <div class="progressrow"><strong>🏆 <span id="score">0</span> puntos</strong><div class="progress"><div class="bar" id="bar"></div></div><strong>✅ <span id="foundCount">0</span>/<span id="total">0</span></strong><span class="stat">⏱️ <span id="timer">00:00</span></span></div>
+ <section class="panel" style="margin-top:14px"><h2>🧠 Mini desafío</h2><div id="quizQuestion" style="font-weight:800;margin-bottom:10px">¿Qué hacemos para aprender una palabra?</div><div class="quizopts" id="quizOptions"></div><div id="quizFeedback" class="feedback"></div></section>
 </section>
-
-<section class="panel">
- <div class="stats">
-  <div class="stat">⭐ Puntos: <span id="score">0</span></div>
-  <div class="stat">✅ Encontradas: <span id="foundCount">0</span>/<span id="totalCount">0</span></div>
-  <div class="stat">⏱️ Tiempo: <span id="timer">0</span>s</div>
- </div>
- <div class="notice" style="margin-top:10px">
-  <b>Cómo jugar:</b> toca la primera letra y luego la última. También puedes arrastrar sobre las letras. Busca las palabras de la lista.
- </div>
- <p id="feedback" aria-live="polite"></p>
-</section>
-
-<section class="panel word-layout">
- <div>
-   <h2 id="gameTitle" style="margin-top:0">Pupiletras</h2>
-   <div id="wordList" class="words"></div>
-   <p class="small">Direcciones posibles: horizontal, vertical y diagonal; también pueden aparecer al revés en niveles superiores.</p>
- </div>
- <div class="grid-wrap"><div id="grid" class="grid"></div></div>
-</section>
-
-<section class="panel teacher">
- <h2>👩‍🏫 Modo docente · crear una pupiletras</h2>
- <p class="small">Escribe entre 5 y 15 palabras, una por línea. El aplicativo generará automáticamente una nueva cuadrícula.</p>
- <textarea id="customWords" placeholder="PALTA&#10;LÚCUMA&#10;AGUA&#10;RÍO&#10;SEMILLA"></textarea>
- <button id="generateCustom" style="margin-top:8px">✨ Generar con mis palabras</button>
-</section>
-
-<section class="panel">
- <h2>📚 Mini desafío de comprensión</h2>
- <div id="quiz" class="quiz"></div>
-</section>
+</div>
+<div class="foot">🌱 Aula multigrado rural · III, IV y V ciclo · ¡Aprender también es jugar! 🌈</div>
 </main>
-<footer>Diseñado para el aula multigrado rural · III, IV y V ciclo · Funciona sin conexión después de instalarse.</footer>
-
 <script>
-const BANK={
- III:{
-  "Comunicación":{
-   "Vocales y palabras":["MAMA","MESA","MIMO","MONO","MULA","MIEL","MUELA","MUNO"],
-   "Familia y escuela":["MAMA","PAPA","MAESTRO","MESA","MOCHILA","MUÑECA","MESA","AULA"],
-   "Valle Fortaleza":["AGUA","RIO","PALTA","LUCUMA","TIERRA","PLANTA","SEMILLA","CHACRA"]
-  },
-  "Ciencia y Tecnología":{
-   "Seres vivos":["PLANTA","ANIMAL","AGUA","AIRE","TIERRA","SOL","SEMILLA","RAIZ"],
-   "Cuidamos el agua":["AGUA","RIO","AHORRO","CUIDAR","GOTA","VIDA","GRIFO","VALLE"]
-  },
-  "Personal Social":{"Mi comunidad":["FAMILIA","ESCUELA","POCOR","PARARIN","COMUNIDAD","VALLE","TRABAJO","RESPETO"]},
-  "Matemática":{"Números":["UNO","DOS","TRES","CUATRO","CINCO","DIEZ","SUMA","RESTA"]}
- },
- IV:{
-  "Comunicación":{"Palabras y textos":["SUSTANTIVO","ADJETIVO","VERBO","ORACION","LECTURA","IDEA","TEXTO","MENSAJE"]},
-  "Ciencia y Tecnología":{"Recursos naturales":["AGUA","SUELO","AIRE","PLANTA","ANIMAL","ENERGIA","RECURSO","CUIDADO"]},
-  "Personal Social":{"Identidad y comunidad":["IDENTIDAD","CULTURA","COMUNIDAD","FAMILIA","TRADICION","RESPETO","DERECHO","DEBER"]},
-  "Matemática":{"Operaciones":["SUMA","RESTA","MULTIPLICACION","DIVISION","FRACCION","DECIMAL","PROBLEMA","PATRON"]}
- },
- V:{
-  "Comunicación":{"Lengua y comprensión":["COMUNICACION","ARGUMENTO","IDEA","PARRAFO","TEXTO","INFERENCIA","ADJETIVO","VERBO"]},
-  "Ciencia y Tecnología":{"Ambiente":["ATMOSFERA","OZONO","CLIMA","AGUA","ECOSISTEMA","BIODIVERSIDAD","RECICLAJE","ENERGIA"]},
-  "Personal Social":{"Ciudadanía":["CIUDADANIA","PARTICIPACION","DEMOCRACIA","DERECHOS","RESPONSABILIDAD","IDENTIDAD","HISTORIA","PATRIMONIO"]},
-  "Matemática":{"Números y geometría":["FRACCION","DECIMAL","PROPORCION","PERIMETRO","AREA","ANGULO","FIGURA","PORCENTAJE"]}
- }
-};
-
-// Amplía el banco a 10 temas por área y ciclo con vocabulario curricular y local.
-const EXTRA={
-"Comunicación":[["Lectura y comprensión","LECTURA,TEXTO,IDEA,TEMA,LEER,COMPRENDER"],["Palabras y sílabas","SILABA,LETRA,SONIDO,PALABRA,VOZ,LEER"],["Cuentos","CUENTO,TITULO,INICIO,NUDO,FINAL,PERSONAJE"],["Poemas","POEMA,VERSO,RIMA,CANTO,ESTROFA,VOZ"],["Oraciones","ORACION,SUJETO,VERBO,PUNTO,IDEA,TEXTO"],["Descripción","DESCRIBIR,DETALLE,FORMA,COLOR,TAMAÑO,OBJETO"],["Verbos","VERBO,ACCION,CORRER,LEER,ESCRIBIR,JUGAR"],["Adjetivos","ADJETIVO,GRANDE,PEQUEÑO,VERDE,ALTO,SUAVE"],["Ortografía","TILDE,SILABA,ACENTO,MAYUSCULA,PUNTO,COMA"],["Valle Fortaleza","POCOR,PARARIN,RECUAY,VALLE,PALTA,LUCUMA"]],
-"Ciencia y Tecnología":[["Seres vivos","PLANTA,ANIMAL,VIDA,RAIZ,HOJA,SEMILLA"],["Cuerpo humano","CUERPO,ORGANO,CEREBRO,MANO,OJO,PULMON"],["Agua y vida","AGUA,RIO,GOTA,LLUVIA,AHORRO,CUIDAR"],["Aire y atmósfera","AIRE,VIENTO,NUBE,ATMOSFERA,OZONO,CLIMA"],["Plantas del valle","PALTA,LUCUMA,RAIZ,TALLO,FLOR,FRUTO"],["Animales","VACA,OVEJA,AVE,PEZ,REPTIL,MAMIFERO"],["Energía","ENERGIA,SOL,LUCES,CALOR,FUERZA,VIENTO"],["Ecosistemas","ECOSISTEMA,HABITAT,ESPECIE,AGUA,SUELO,CLIMA"],["Residuos y reciclaje","RESIDUO,RECICLAR,REUSAR,REDUCIR,LIMPIO,COMPOST"],["Agricultura sostenible","CHACRA,SUELO,SEMILLA,RIEGO,ABONO,COSECHA"]],
-"Personal Social":[["Familia","MAMA,PAPA,HIJO,ABUELO,ABUELA,FAMILIA"],["Escuela","AULA,LIBRO,MAESTRO,AMIGO,REGLA,CUADERNO"],["Comunidad","POCOR,PARARIN,RECUAY,VECINO,AYUDA,COMUNIDAD"],["Identidad","IDENTIDAD,NOMBRE,ORIGEN,CULTURA,HISTORIA,FAMILIA"],["Derechos y deberes","DERECHO,DEBER,SALUD,EDUCACION,RESPETO,JUSTICIA"],["Convivencia","DIALOGO,RESPETO,ACUERDO,ESCUCHA,PAZ,AYUDA"],["Símbolos patrios","PERU,BANDERA,ESCUDO,HIMNO,PATRIA,ROJO"],["Historia local","HISTORIA,VALLE,RECUAY,POCOR,PARARIN,MEMORIA"],["Actividades económicas","AGRICULTURA,FRUTA,CHACRA,MERCADO,TRABAJO,COSECHA"],["Prevención de riesgos","SISMO,HUAICO,ALARMA,MOCHILA,RIESGO,PREVENIR"]],
-"Matemática":[["Números y conteo","UNO,DOS,TRES,CUATRO,CINCO,DIEZ"],["Suma y resta","SUMA,RESTA,TOTAL,DIFERENCIA,AGREGAR,QUITAR"],["Multiplicación","MULTIPLICAR,FACTOR,PRODUCTO,DOBLE,TRIPLE,TABLA"],["División","DIVIDIR,REPARTIR,MITAD,GRUPO,COCIENTE,RESTO"],["Fracciones","FRACCION,MEDIO,TERCIO,CUARTO,MITAD,PARTE"],["Decimales","DECIMAL,COMA,ENTERO,DECIMA,CENTESIMA,VALOR"],["Geometría","FIGURA,LADO,ANGULO,VERTICE,RECTA,TRIANGULO"],["Medidas","METRO,LITRO,KILO,MASA,LARGO,MEDIR"],["Estadística","TABLA,GRAFICO,DATOS,MODA,PROMEDIO,ENCUESTA"],["Matemática en la chacra","PALTA,LUCUMA,PRECIO,COSECHA,KILO,TOTAL"]]};
-for (const cyc of Object.keys(BANK)) for (const area of Object.keys(BANK[cyc])) {
- const extras=EXTRA[area]; let idx=0;
- for (const [title,raw] of extras) { if (!BANK[cyc][area][title]) BANK[cyc][area][title]=raw.split(','); }
-}
-let state={words:[],found:new Set(),size:10,grid:[],placements:[],first:null,score:0,time:0,timer:null,hintIndex:0};
+const BANK={"III": {"Comunicación": {"Vocales y palabras": ["MAMA", "MESA", "MIMO", "MONO", "MULA", "MIEL", "PATO", "UVA"], "Sílabas con M": ["MAMA", "MIMO", "MESA", "MULA", "MONO", "MIMO", "MAMI", "MIEL"], "Sílabas con P": ["PAPA", "PATO", "PIPA", "PUMA", "PALA", "PELO", "PAPA", "PIPA"], "Sílabas con S": ["SOPA", "SAPO", "SALA", "SUMA", "SILLA", "SEIS", "SUELO", "SOL"], "Sílabas con L": ["LUNA", "LUPA", "LIMA", "LOMA", "LANA", "LEON", "LORO", "LATA"], "Sílabas con T": ["TAPA", "TINA", "TELA", "TUNA", "TUBO", "TOMATE", "TITO", "TIZA"], "Familia": ["MAMA", "PAPA", "TIA", "TIO", "ABUELA", "ABUELO", "HERMANO", "FAMILIA"], "Mi escuela": ["AULA", "LIBRO", "MESA", "LAPIZ", "REGLA", "MOCHILA", "MAESTRO", "AMIGO"], "Animales": ["GATO", "PATO", "VACA", "PERRO", "MONO", "PUMA", "LORO", "BURRO"], "Valle Fortaleza": ["AGUA", "RIO", "PALTA", "LUCUMA", "CHACRA", "PLANTA", "TIERRA", "FRUTA"]}, "Ciencia y Tecnología": {"Seres vivos": ["PLANTA", "ANIMAL", "GATO", "AVE", "VACA", "ARBOL", "FLOR", "PEZ"], "Partes de la planta": ["RAIZ", "TALLO", "HOJA", "FLOR", "FRUTO", "SEMILLA", "RAMA", "TRONCO"], "Los sentidos": ["VISTA", "OIDO", "OLFATO", "GUSTO", "TACTO", "MANO", "OJO", "NARIZ"], "El cuerpo": ["CARA", "MANO", "PIE", "BRAZO", "OJO", "BOCA", "PIERNA", "CABEZA"], "El agua": ["AGUA", "GOTA", "RIO", "LLUVIA", "VIDA", "CUIDAR", "NUBE", "MAR"], "Tiempo atmosférico": ["SOL", "NUBE", "VIENTO", "LLUVIA", "FRIO", "CALOR", "CIELO", "AIRE"], "Animales de la zona": ["VACA", "BURRO", "PERRO", "GALLINA", "OVEJA", "CABRA", "GATO", "CUY"], "Alimentación saludable": ["FRUTA", "LECHE", "PAPA", "MAIZ", "AGUA", "HUEVO", "SOPA", "PESCADO"], "Cuidamos el ambiente": ["LIMPIO", "REUSAR", "RECICLA", "TIERRA", "AGUA", "PLANTA", "BASURA", "CUIDAR"], "Frutas del valle": ["PALTA", "LUCUMA", "MANGO", "UVA", "PAPAYA", "FRUTA", "PACA", "CHIRIMOYA"]}, "Personal Social": {"Mi familia": ["MAMA", "PAPA", "HIJO", "TIA", "TIO", "ABUELO", "HERMANA", "FAMILIA"], "Mi escuela": ["AULA", "LIBRO", "AMIGO", "JUEGO", "MAESTRO", "PATIO", "MESA", "REGLA"], "Mi comunidad": ["POCOR", "PARARIN", "CASA", "PLAZA", "VECINO", "AYUDA", "VALLE", "PUEBLO"], "Normas de convivencia": ["RESPETO", "ORDEN", "AYUDA", "ESCUCHA", "TURNO", "PAZ", "DIALOGO", "AMISTAD"], "Emociones": ["ALEGRIA", "MIEDO", "CALMA", "ENOJO", "AMOR", "TRISTE", "FELIZ", "SORPRESA"], "Derechos del niño": ["JUEGO", "SALUD", "NOMBRE", "FAMILIA", "ESTUDIO", "CUIDADO", "AMOR", "CASA"], "Responsabilidades": ["ORDEN", "LIMPIAR", "REGAR", "AYUDAR", "CUIDAR", "LEER", "ESTUDIAR", "BARRER"], "Símbolos del Perú": ["PERU", "BANDERA", "ESCUDO", "HIMNO", "ROJO", "BLANCO", "PATRIA", "SOL"], "Tradiciones": ["DANZA", "MUSICA", "FIESTA", "BAILE", "CANTO", "CULTURA", "TRAJE", "PUEBLO"], "Seguridad vial": ["CRUCE", "CALLE", "MIRAR", "ALTO", "PASO", "CUIDADO", "CASCO", "RUTA"]}, "Matemática": {"Números": ["UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "DIEZ"], "Sumas sencillas": ["SUMA", "JUNTAR", "TOTAL", "MAS", "CONTAR", "DOS", "TRES", "CINCO"], "Restas sencillas": ["RESTA", "QUITAR", "MENOS", "QUEDA", "FALTA", "UNO", "DOS", "CERO"], "Formas geométricas": ["CIRCULO", "CUADRADO", "TRIANGULO", "RECTANGULO", "LADO", "PUNTO", "LINEA", "FORMA"], "Comparación": ["MAYOR", "MENOR", "IGUAL", "LARGO", "CORTO", "ALTO", "BAJO", "PESO"], "Patrones": ["SERIE", "PATRON", "SIGUE", "REPETIR", "ORDEN", "COLOR", "FORMA", "NUMERO"], "Medidas": ["METRO", "LITRO", "PESO", "REGLA", "LARGO", "MEDIR", "KILO", "TALLA"], "Tiempo": ["DIA", "NOCHE", "HORA", "RELOJ", "MES", "AÑO", "AYER", "HOY"], "Problemas cotidianos": ["DATOS", "SUMA", "RESTA", "TOTAL", "FALTA", "SOBRA", "MAS", "MENOS"], "Frutas y cantidades": ["PALTA", "LUCUMA", "FRUTA", "CINCO", "TRES", "TOTAL", "PESO", "KILO"]}}, "IV": {"Comunicación": {"Sustantivos": ["SUSTANTIVO", "PERSONA", "LUGAR", "ANIMAL", "OBJETO", "NOMBRE", "CASA", "ESCUELA"], "Adjetivos": ["ADJETIVO", "GRANDE", "PEQUEÑO", "RAPIDO", "LENTO", "BONITO", "ALEGRE", "ALTO"], "Verbos": ["VERBO", "CORRER", "LEER", "ESCRIBIR", "JUGAR", "CANTAR", "SALTAR", "PENSAR"], "Sinónimos": ["ALEGRE", "FELIZ", "RAPIDO", "VELOZ", "BONITO", "LINDO", "ENORME", "GRANDE"], "Antónimos": ["ALTO", "BAJO", "FRIO", "CALIENTE", "DIA", "NOCHE", "CERCA", "LEJOS"], "Oraciones": ["ORACION", "SUJETO", "VERBO", "PREDICADO", "PUNTO", "IDEA", "COMA", "TEXTO"], "Cuentos": ["CUENTO", "TITULO", "INICIO", "NUDO", "FINAL", "PERSONAJE", "LUGAR", "AUTOR"], "Comprensión lectora": ["LEER", "TEXTO", "IDEA", "TEMA", "INFERIR", "OPINION", "RESUMEN", "TITULO"], "Signos de puntuación": ["PUNTO", "COMA", "PREGUNTA", "EXCLAMAR", "PAUSA", "DOS", "SIGNO", "TEXTO"], "Valle Fortaleza": ["POCOR", "PARARIN", "PALTA", "LUCUMA", "RIO", "COMUNIDAD", "FRUTA", "CHACRA"]}, "Ciencia y Tecnología": {"Recursos naturales": ["AGUA", "SUELO", "AIRE", "PLANTA", "ANIMAL", "ROCA", "BOSQUE", "SOL"], "Sistema digestivo": ["BOCA", "ESOFAGO", "ESTOMAGO", "INTESTINO", "DIGESTION", "ALIMENTO", "DIENTES", "LENGUA"], "Sistema respiratorio": ["NARIZ", "PULMON", "AIRE", "BRONQUIO", "RESPIRAR", "OXIGENO", "PECHO", "CUERPO"], "Ecosistemas": ["ECOSISTEMA", "HABITAT", "ESPECIE", "AGUA", "SUELO", "CLIMA", "BOSQUE", "RIO"], "Plantas": ["RAIZ", "TALLO", "HOJA", "FLOR", "FRUTO", "SEMILLA", "POLEN", "RAMA"], "Animales vertebrados": ["MAMIFERO", "AVE", "PEZ", "REPTIL", "ANFIBIO", "HUESO", "PLUMA", "ESCAMA"], "Estados del agua": ["SOLIDO", "LIQUIDO", "GAS", "HIELO", "VAPOR", "AGUA", "NUBE", "LLUVIA"], "Energía": ["ENERGIA", "SOL", "LUZ", "CALOR", "VIENTO", "FUERZA", "PANEL", "BATERIA"], "Cuidado ambiental": ["RECICLAJE", "REUTILIZAR", "RESIDUO", "LIMPIO", "REDUCIR", "CUIDAR", "BASURA", "SUELO"], "Valle Fortaleza": ["RIO", "PALTA", "LUCUMA", "CHACRA", "SUELO", "AGUA", "FRUTA", "RIEGO"]}, "Personal Social": {"Identidad": ["IDENTIDAD", "NOMBRE", "FAMILIA", "ORIGEN", "COSTUMBRE", "HISTORIA", "PUEBLO", "VALOR"], "Familia y comunidad": ["FAMILIA", "VECINO", "COMUNIDAD", "AYUDA", "TRABAJO", "RESPETO", "ACUERDO", "PUEBLO"], "Normas y acuerdos": ["ACUERDO", "NORMA", "DIALOGO", "RESPETO", "JUSTICIA", "DEBER", "DERECHO", "PAZ"], "Derechos y deberes": ["DERECHO", "DEBER", "SALUD", "EDUCACION", "PROTECCION", "RESPETO", "IGUALDAD", "LIBERTAD"], "Regiones del Perú": ["COSTA", "SIERRA", "SELVA", "MAR", "ANDES", "PERU", "VALLE", "RIO"], "Símbolos patrios": ["BANDERA", "ESCUDO", "HIMNO", "PATRIA", "PERU", "SIMBOLO", "ROJO", "BLANCO"], "Historia local": ["POCOR", "PARARIN", "RECUAY", "HISTORIA", "MEMORIA", "VALLE", "PUEBLO", "PASADO"], "Actividades económicas": ["AGRICULTURA", "COMERCIO", "FRUTA", "CHACRA", "TRABAJO", "MERCADO", "VENTA", "COSECHA"], "Mapas y orientación": ["MAPA", "NORTE", "SUR", "ESTE", "OESTE", "LEYENDA", "ESCALA", "RUTA"], "Convivencia democrática": ["DIALOGO", "VOTAR", "ACUERDO", "OPINION", "PARTICIPAR", "RESPETO", "ELECCION", "VOZ"]}, "Matemática": {"Multiplicación": ["MULTIPLICAR", "PRODUCTO", "FACTOR", "TABLA", "VECES", "DOBLE", "TRIPLE", "GRUPO"], "División": ["DIVIDIR", "REPARTIR", "COCIENTE", "RESIDUO", "MITAD", "GRUPO", "PARTES", "IGUAL"], "Fracciones": ["FRACCION", "MEDIO", "TERCIO", "CUARTO", "NUMERADOR", "DENOMINADOR", "MITAD", "PARTE"], "Decimales": ["DECIMAL", "COMA", "DECIMA", "CENTESIMA", "ENTERO", "VALOR", "CIFRA", "NUMERO"], "Perímetro": ["PERIMETRO", "LADO", "CONTORNO", "SUMA", "METRO", "FIGURA", "BORDE", "MEDIDA"], "Geometría": ["RECTA", "ANGULO", "VERTICE", "LADO", "POLIGONO", "FIGURA", "PUNTO", "PLANO"], "Medidas": ["METRO", "LITRO", "KILO", "MASA", "LONGITUD", "MEDIR", "BALANZA", "VOLUMEN"], "Patrones numéricos": ["PATRON", "SERIE", "REGLA", "SECUENCIA", "SUMAR", "RESTAR", "ORDEN", "NUMERO"], "Problemas matemáticos": ["DATOS", "OPERACION", "SOLUCION", "RAZONAR", "RESULTADO", "PROBLEMA", "ESTIMAR", "COMPROBAR"], "Frutas del valle": ["PALTA", "LUCUMA", "DOCENA", "MEDIA", "TOTAL", "PRECIO", "KILO", "VENTA"]}}, "V": {"Comunicación": {"Comprensión lectora": ["TEXTO", "TEMA", "IDEA", "INFERENCIA", "PROPOSITO", "RESUMEN", "CONCLUSION", "OPINION"], "Tipos de texto": ["NARRATIVO", "DESCRIPTIVO", "INFORMATIVO", "ARGUMENTATIVO", "INSTRUCTIVO", "POEMA", "NOTICIA", "CARTA"], "Sustantivo y adjetivo": ["SUSTANTIVO", "ADJETIVO", "COMUN", "PROPIO", "CALIFICATIVO", "GENERO", "NUMERO", "GRADO"], "Verbos y tiempos": ["VERBO", "PRESENTE", "PASADO", "FUTURO", "PERSONA", "NUMERO", "INFINITIVO", "ACCION"], "Conectores": ["CONECTOR", "ADEMAS", "PERO", "PORQUE", "ENTONCES", "FINALMENTE", "AUNQUE", "TAMBIEN"], "Ortografía": ["TILDE", "AGUDA", "GRAVE", "ESDRUJULA", "SILABA", "ACENTO", "HIATO", "DIPTONGO"], "Producción de textos": ["PLANIFICAR", "BORRADOR", "REVISAR", "EDITAR", "TITULO", "PARRAFO", "IDEA", "TEXTO"], "Comunicación oral": ["DIALOGO", "ESCUCHA", "TURNO", "OPINION", "DEBATE", "ARGUMENTO", "VOZ", "RESPETO"], "Literatura": ["POEMA", "CUENTO", "FABULA", "VERSO", "RIMA", "PERSONAJE", "ESTROFA", "AUTOR"], "Valle Fortaleza": ["POCOR", "PARARIN", "RECUAY", "FORTALEZA", "PALTA", "LUCUMA", "CHACRA", "VALLE"]}, "Ciencia y Tecnología": {"Atmósfera": ["ATMOSFERA", "TROPOSFERA", "ESTRATOSFERA", "OZONO", "AIRE", "CLIMA", "MESOSFERA", "EXOSFERA"], "Capa de ozono": ["OZONO", "RADIACION", "SOL", "ATMOSFERA", "PROTEGER", "CUIDADO", "ULTRAVIOLETA", "CAPA"], "Ecosistemas": ["ECOSISTEMA", "BIODIVERSIDAD", "HABITAT", "ESPECIE", "POBLACION", "AMBIENTE", "FAUNA", "FLORA"], "Cuerpo humano": ["ORGANO", "SISTEMA", "DIGESTION", "RESPIRACION", "CIRCULACION", "CEREBRO", "CORAZON", "PULMON"], "Materia y energía": ["MATERIA", "MASA", "VOLUMEN", "ENERGIA", "CALOR", "FUERZA", "ESTADO", "CAMBIO"], "Ciclo del agua": ["EVAPORACION", "CONDENSACION", "PRECIPITACION", "AGUA", "CICLO", "NUBE", "INFILTRACION", "RIO"], "Recursos naturales": ["RENOVABLE", "MINERAL", "SUELO", "AGUA", "BOSQUE", "ENERGIA", "NATURAL", "RECURSO"], "Cambio climático": ["CLIMA", "CALENTAMIENTO", "EMISION", "CARBONO", "SEQUIA", "LLUVIA", "TEMPERATURA", "PLANETA"], "Gestión de residuos": ["RECICLAR", "REUTILIZAR", "REDUCIR", "RESIDUO", "COMPOST", "CONTAMINAR", "BASURA", "CLASIFICAR"], "Agricultura sostenible": ["SUELO", "RIEGO", "SEMILLA", "CULTIVO", "ABONO", "PLAGA", "COSECHA", "AHORRO"]}, "Personal Social": {"Ciudadanía": ["CIUDADANIA", "PARTICIPACION", "DEMOCRACIA", "DERECHO", "DEBER", "RESPONSABILIDAD", "ACUERDO", "VOTO"], "Derechos humanos": ["DIGNIDAD", "LIBERTAD", "IGUALDAD", "RESPETO", "JUSTICIA", "DERECHO", "SOLIDARIDAD", "PAZ"], "Historia del Perú": ["CULTURA", "INCAS", "COLONIA", "INDEPENDENCIA", "REPUBLICA", "HISTORIA", "LIBERTADOR", "PATRIA"], "Geografía del Perú": ["COSTA", "SIERRA", "SELVA", "CORDILLERA", "VALLE", "RIO", "MONTAÑA", "DESIERTO"], "Regiones y recursos": ["REGION", "RECURSO", "AGRICULTURA", "MINERIA", "PESCA", "TURISMO", "COMERCIO", "GANADERIA"], "Economía familiar": ["AHORRO", "GASTO", "INGRESO", "PRECIO", "PRESUPUESTO", "NECESIDAD", "DINERO", "COMPRA"], "Diversidad cultural": ["CULTURA", "TRADICION", "LENGUA", "DANZA", "MUSICA", "IDENTIDAD", "COSTUMBRE", "VESTIDO"], "Prevención de riesgos": ["RIESGO", "SISMO", "HUAICO", "ALARMA", "MOCHILA", "PREVENCION", "EVACUAR", "REFUGIO"], "Organización del Estado": ["ESTADO", "GOBIERNO", "MUNICIPIO", "REGION", "NACION", "LEY", "CONGRESO", "JUSTICIA"], "Valle Fortaleza": ["POCOR", "PARARIN", "RECUAY", "FORTALEZA", "AGRICULTURA", "COMUNIDAD", "VALLE", "RIO"]}, "Matemática": {"Fracciones": ["FRACCION", "NUMERADOR", "DENOMINADOR", "EQUIVALENTE", "PROPIA", "IMPROPIA", "PARTE", "ENTERO"], "Números decimales": ["DECIMAL", "ENTERO", "DECIMA", "CENTESIMA", "VALOR", "COMA", "CIFRA", "NUMERO"], "Proporcionalidad": ["PROPORCION", "RAZON", "ESCALA", "DOBLE", "TRIPLE", "MITAD", "RELACION", "CANTIDAD"], "Porcentajes": ["PORCENTAJE", "CIEN", "MITAD", "DESCUENTO", "TOTAL", "TANTO", "PRECIO", "AUMENTO"], "Perímetro y área": ["PERIMETRO", "AREA", "LARGO", "ANCHO", "FIGURA", "UNIDAD", "SUPERFICIE", "BORDE"], "Geometría": ["POLIGONO", "ANGULO", "VERTICE", "DIAGONAL", "PARALELO", "PERPENDICULAR", "RECTA", "PLANO"], "Estadística": ["TABLA", "GRAFICO", "DATOS", "FRECUENCIA", "PROMEDIO", "MODA", "MEDIA", "ENCUESTA"], "Múltiplos y divisores": ["MULTIPLO", "DIVISOR", "PRIMO", "COMPUESTO", "FACTOR", "RESTO", "NUMERO", "DIVISIBLE"], "Problemas de varias etapas": ["DATOS", "ESTIMAR", "OPERACION", "ESTRATEGIA", "RESULTADO", "COMPROBAR", "RAZONAR", "SOLUCION"], "Matemática en la chacra": ["COSECHA", "KILOGRAMO", "PRECIO", "TOTAL", "FRUTA", "PROPORCION", "RIEGO", "VENTA"]}}};
+const labels={III:"III ciclo · 1.º–2.º",IV:"IV ciclo · 3.º–4.º",V:"V ciclo · 5.º–6.º"};
 const $=id=>document.getElementById(id);
-function norm(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-ZÑ]/g,'')}
-function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function directions(level){return level==='3'?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[-1,-1]]:[[0,1],[1,0],[1,1],[1,-1]]}
-function canPlace(w,r,c,dr,dc,n,g){for(let i=0;i<w.length;i++){let y=r+dr*i,x=c+dc*i;if(y<0||x<0||y>=n||x>=n||(g[y][x]&&g[y][x]!==w[i]))return false}return true}
-function build(words,level){let n=Math.max(10,Math.min(16,Math.max(...words.map(w=>w.length),6)+2));let g=Array.from({length:n},()=>Array(n).fill('')),placements=[];
- for(const w of [...words].sort((a,b)=>b.length-a.length)){let ok=false;for(let t=0;t<2200&&!ok;t++){let [dr,dc]=shuffle(directions(level))[0],r=Math.floor(Math.random()*n),c=Math.floor(Math.random()*n);if(canPlace(w,r,c,dr,dc,n,g)){for(let i=0;i<w.length;i++)g[r+dr*i][c+dc*i]=w[i];placements.push({word:w,r,c,dr,dc});ok=true}}if(!ok){return build(words,level)}}
- const letters='AEIOULMNPRSTCDGFBVH';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(!g[r][c])g[r][c]=letters[Math.floor(Math.random()*letters.length)];return {g,placements,n}}
-function setOptions(){let data=BANK[$('cycle').value];$('area').innerHTML=Object.keys(data).map(a=>`<option>${a}</option>`).join('');setTopics();newGame()}
-function setTopics(){let data=BANK[$('cycle').value][$('area').value];$('topic').innerHTML=Object.keys(data).map(t=>`<option>${t}</option>`).join('')}
-function newGame(custom=null){clearInterval(state.timer);state.time=0;$('timer').textContent='0';state.score=0;state.found=new Set();state.first=null;state.hintIndex=0;let words=custom?custom.map(norm).filter(w=>w.length>=2):BANK[$('cycle').value][$('area').value][$('topic').value].map(norm);words=[...new Set(words)].slice(0,15);if(!words.length)return;let b=build(words,$('level').value);Object.assign(state,{words,grid:b.g,placements:b.placements,size:b.n});render();$('feedback')&&($('feedback').textContent='Toca la primera y luego la última letra de la palabra.');state.timer=setInterval(()=>{$('timer').textContent=String(++state.time)},1000)}
-function render(){ $('score').textContent=state.score;$('foundCount').textContent=state.found.size;$('totalCount').textContent=state.words.length;$('grid').style.gridTemplateColumns=`repeat(${state.size}, minmax(0,1fr))`;$('grid').innerHTML='';
- for(let r=0;r<state.size;r++)for(let c=0;c<state.size;c++){let b=document.createElement('button');b.type='button';b.className='cell';b.textContent=state.grid[r][c];b.dataset.r=r;b.dataset.c=c;b.onclick=()=>selectCell(r,c);$('grid').appendChild(b)}
- $('wordList').innerHTML=state.words.map(w=>`<span class="word ${state.found.has(w)?'found':''}" id="w-${w}">${w}</span>`).join('');$('gameTitle').textContent=`${$('cycle').value} · ${$('area').value} · ${$('topic').value}`;renderQuiz()}
-function clearMarks(){document.querySelectorAll('.cell.selected,.cell.hint').forEach(x=>x.classList.remove('selected','hint'))}
-function selectCell(r,c){let el=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);if(!state.first){clearMarks();state.first={r,c};el.classList.add('selected');$('feedback').textContent='Ahora toca la última letra de la palabra.';return}let a=state.first;state.first=null;clearMarks();let dr=r-a.r,dc=c-a.c;if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))){$('feedback').textContent='Selecciona una línea horizontal, vertical o diagonal.';return}let sr=Math.sign(dr),sc=Math.sign(dc),len=Math.max(Math.abs(dr),Math.abs(dc))+1,txt='';for(let i=0;i<len;i++)txt+=state.grid[a.r+sr*i][a.c+sc*i];let rev=txt.split('').reverse().join(''),hit=state.words.find(w=>!state.found.has(w)&&(w===txt||w===rev));if(!hit){$('feedback').textContent=`“${txt}” no coincide con una palabra. Prueba otra vez.`;return}state.found.add(hit);state.score+=10;for(let i=0;i<len;i++)document.querySelector(`.cell[data-r="${a.r+sr*i}"][data-c="${a.c+sc*i}"]`)?.classList.add('found');render();$('feedback').textContent=`¡Muy bien! Encontraste ${hit}.`;if(state.found.size===state.words.length){clearInterval(state.timer);state.score+=30;$('score').textContent=state.score;$('feedback').textContent='¡Excelente! Encontraste todas las palabras. +30 puntos.'}}
-function hint(){let remaining=state.words.filter(w=>!state.found.has(w));if(!remaining.length){$('feedback').textContent='¡Ya encontraste todas las palabras!';return}let w=remaining[state.hintIndex++%remaining.length],p=state.placements.find(x=>x.word===w);clearMarks();for(let i=0;i<w.length;i++)document.querySelector(`.cell[data-r="${p.r+p.dr*i}"][data-c="${p.c+p.dc*i}"]`)?.classList.add('hint');$('feedback').textContent=`Pista: la palabra ${w} está resaltada en azul.`}
-function readWords(){if(!('speechSynthesis'in window)){ $('feedback').textContent='Tu navegador no admite lectura por voz. Prueba Chrome.';return}speechSynthesis.cancel();let list=state.words.filter(w=>!state.found.has(w));if(!list.length)list=state.words;let u=new SpeechSynthesisUtterance(list.join('. '));u.lang='es-ES';u.rate=.82;u.onstart=()=> $('feedback').textContent='Leyendo palabras…';u.onend=()=> $('feedback').textContent='Lectura terminada.';u.onerror=()=> $('feedback').textContent='No se pudo reproducir la voz; revisa el volumen del dispositivo.';speechSynthesis.speak(u)}
-function renderQuiz(){let area=$('area').value,q=area==='Comunicación'?{t:'¿Qué hacemos para comprender una palabra?',o:['Leerla y relacionarla con su significado','Ignorarla','Taparla'],a:0}:area==='Ciencia y Tecnología'?{t:'¿Qué recurso debemos cuidar?',o:['El agua','El humo','La basura'],a:0}:area==='Personal Social'?{t:'¿Qué ayuda a convivir mejor?',o:['El respeto','El maltrato','El desorden'],a:0}:{t:'¿Qué operación permite juntar cantidades?',o:['La suma','La resta','La división'],a:0};$('quiz').innerHTML=`<b>${q.t}</b>`+q.o.map((x,i)=>`<button type="button" class="option" data-i="${i}">${x}</button>`).join('');document.querySelectorAll('.option').forEach(el=>el.onclick=()=>{document.querySelectorAll('.option').forEach(b=>b.disabled=true);let yes=Number(el.dataset.i)===q.a;el.classList.add(yes?'correct':'wrong');if(yes){state.score+=5;$('score').textContent=state.score}})}
-$('cycle').onchange=setOptions;$('area').onchange=()=>{setTopics();newGame()};$('topic').onchange=()=>newGame();$('level').onchange=()=>newGame();$('newGame').onclick=()=>newGame();$('hint').onclick=hint;$('readWords').onclick=readWords;$('generateCustom').onclick=()=>{let w=$('customWords').value.split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean);if(w.length<5){$('feedback').textContent='Escribe al menos 5 palabras.';return}if(w.length>15){$('feedback').textContent='Usa como máximo 15 palabras.';return}newGame(w)};
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));setOptions();
-</script>
-</body>
-</html>
+let cycle="III",area="Comunicación",topic="",level="1";
+let game={words:[],grid:[],placements:[],found:new Set(),size:10,first:null,score:0,hintAt:0,time:0,timer:null,custom:false};
+function norm(s){return s.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toUpperCase().replace(/[^A-ZÑ]/g,"")}
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function dirs(){return level==="3"?[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,1],[-1,-1]]:[[0,1],[1,0],[1,1],[1,-1]]}
+function fits(w,r,c,dr,dc,n,g){for(let i=0;i<w.length;i++){let y=r+dr*i,x=c+dc*i;if(y<0||x<0||y>=n||x>=n||(g[y][x]&&g[y][x]!==w[i]))return false}return true}
+function makeGrid(words){
+ let n=Math.max(10,Math.min(16,Math.max(...words.map(w=>w.length))+3));
+ let g=Array.from({length:n},()=>Array(n).fill("")),ps=[];
+ for(let w of [...words].sort((a,b)=>b.length-a.length)){
+  let ok=false;
+  for(let t=0;t<2500&&!ok;t++){let [dr,dc]=shuffle(dirs())[0],r=Math.floor(Math.random()*n),c=Math.floor(Math.random()*n);if(fits(w,r,c,dr,dc,n,g)){for(let i=0;i<w.length;i++)g[r+dr*i][c+dc*i]=w[i];ps.push({word:w,r,c,dr,dc});ok=true}}
+  if(!ok){n+=2; if(n>22) return makeGrid(words);return makeGrid(words)}
+ }
+ const chars="AEIOULMNPRSTCDGFBVH";
+ for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(!g[r][c])g[r][c]=chars[Math.floor(Math.random()*chars.length)];
+ return {g,ps,n}
+}
+function populateTopics(){const names=Object.keys(BANK[cycle][area]);$("topic").innerHTML=names.map(n=>`<option value="${n}">${n}</option>`).join("");topic=names[0]}
+function start(words=null){
+ clearInterval(game.timer);game.time=0;game.score=0;game.found=new Set();game.first=null;game.hintAt=0;game.custom=!!words;
+ let source=words||BANK[cycle][area][topic];let list=[...new Set(source.map(norm).filter(w=>w.length>=2))].slice(0,15);
+ const built=makeGrid(list);Object.assign(game,{words:list,grid:built.g,placements:built.ps,size:built.n});
+ $("timer").textContent="00:00";render();game.timer=setInterval(()=>{game.time++;$("timer").textContent=String(Math.floor(game.time/60)).padStart(2,"0")+":"+String(game.time%60).padStart(2,"0")},1000);
+ $("feedback").textContent="¡A jugar! Toca la primera letra y después la última.";
+}
+function render(){
+ $("grid").style.gridTemplateColumns=`repeat(${game.size},minmax(0,1fr))`;$("grid").innerHTML="";
+ for(let r=0;r<game.size;r++)for(let c=0;c<game.size;c++){let b=document.createElement("button");b.type="button";b.className="cell";b.textContent=game.grid[r][c];b.dataset.r=r;b.dataset.c=c;b.setAttribute("aria-label",`Fila ${r+1}, columna ${c+1}, letra ${b.textContent}`);b.onclick=()=>choose(r,c);$("grid").appendChild(b)}
+ $("wordList").innerHTML="";game.words.forEach(w=>{let row=document.createElement("div");row.className="word"+(game.found.has(w)?" found":"");row.dataset.word=w;let sound=document.createElement("button");sound.className="sound";sound.textContent="🔊";sound.title="Escuchar "+w;sound.onclick=()=>speak([w]);let text=document.createElement("span");text.textContent=w;row.append(sound,text);if(game.found.has(w)){let check=document.createElement("span");check.className="check";check.textContent="✓";row.append(check)}$("wordList").append(row)});
+ $("wordCount").textContent=`(${game.words.length})`;$("gameTitle").textContent=(game.custom?"✏️ Pupiletras personalizada":({"Comunicación":"📚","Matemática":"🔢","Ciencia y Tecnología":"🔬","Personal Social":"🌎"}[area]+" "+area+" · "+topic));$("badge").textContent=labels[cycle];
+ $("score").textContent=game.score;$("foundCount").textContent=game.found.size;$("total").textContent=game.words.length;$("bar").style.width=(game.found.size/game.words.length*100)+"%";makeQuiz();
+}
+function clearMarks(){document.querySelectorAll(".cell.selected,.cell.hint").forEach(e=>e.classList.remove("selected","hint"))}
+function choose(r,c){
+ const el=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+ if(!game.first){clearMarks();game.first={r,c};el.classList.add("selected");$("feedback").textContent="Ahora toca la última letra de esa palabra.";return}
+ const a=game.first;game.first=null;clearMarks();let dr=r-a.r,dc=c-a.c;
+ if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))){$("feedback").textContent="Elige letras que estén en una misma línea.";return}
+ let sr=Math.sign(dr),sc=Math.sign(dc),len=Math.max(Math.abs(dr),Math.abs(dc))+1,txt="";
+ for(let i=0;i<len;i++)txt+=game.grid[a.r+sr*i][a.c+sc*i];
+ let rev=txt.split("").reverse().join(""),hit=game.words.find(w=>!game.found.has(w)&&(w===txt||w===rev));
+ if(!hit){$("feedback").textContent="Esa línea no forma una palabra de la lista. ¡Prueba otra vez!";return}
+ game.found.add(hit);game.score+=10;
+ for(let i=0;i<len;i++)document.querySelector(`.cell[data-r="${a.r+sr*i}"][data-c="${a.c+sc*i}"]`)?.classList.add("found");
+ render();$("feedback").textContent="🌟 ¡Muy bien! Encontraste "+hit+".";
+ if(game.found.size===game.words.length){clearInterval(game.timer);game.score+=30;$("score").textContent=game.score;$("feedback").textContent="🎉 ¡Lo lograste! Encontraste todas las palabras y ganaste 30 puntos extra."}
+}
+function hint(){let left=game.words.filter(w=>!game.found.has(w));if(!left.length){$("feedback").textContent="¡Ya encontraste todas las palabras!";return}let w=left[game.hintAt%left.length];game.hintAt++;let p=game.placements.find(x=>x.word===w);clearMarks();for(let i=0;i<w.length;i++)document.querySelector(`.cell[data-r="${p.r+p.dr*i}"][data-c="${p.c+p.dc*i}"]`)?.classList.add("hint");$("feedback").textContent="💡 Pista: las letras azules forman "+w+". Observa su dirección."}
+function speak(words){if(!("speechSynthesis"in window)){$("feedback").textContent="Este navegador no ofrece lectura de voz. Prueba Chrome.";return}window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(words.join(". "));u.lang="es-PE";u.rate=.82;u.onstart=()=>{$("feedback").textContent="🔊 Escucha con atención…"};u.onend=()=>{$("feedback").textContent="¡Terminó la lectura!"};u.onerror=()=>{$("feedback").textContent="No se pudo reproducir audio. Revisa el volumen del dispositivo."};window.speechSynthesis.speak(u)}
+function verify(){if(game.found.size===game.words.length){$("feedback").textContent="¡Todas las palabras encontradas!";return}let left=game.words.filter(w=>!game.found.has(w));$("feedback").textContent=`Te faltan ${left.length} palabra(s). Busca: ${left.slice(0,3).join(", ")}${left.length>3?"…":""}.`}
+function makeQuiz(){let qs={"Comunicación":["¿Qué hacemos para comprender una palabra?",["Leerla","Ignorarla","Taparla"],0],"Matemática":["¿Qué operación junta cantidades?",["Suma","Resta","División"],0],"Ciencia y Tecnología":["¿Qué recurso debemos cuidar?",["Agua","Humo","Basura"],0],"Personal Social":["¿Qué ayuda a convivir mejor?",["Respeto","Maltrato","Desorden"],0]};let q=qs[area];$("quizQuestion").textContent=q[0];$("quizFeedback").textContent="";$("quizOptions").innerHTML="";q[1].forEach((x,i)=>{let b=document.createElement("button");b.textContent=x;b.onclick=()=>{document.querySelectorAll("#quizOptions button").forEach(a=>a.disabled=true);b.classList.add(i===q[2]?"correct":"wrong");$("quizFeedback").textContent=i===q[2]?"¡Correcto! +5 puntos 🌟":"Inténtalo en la próxima ronda.";if(i===q[2]){game.score+=5;$("score").textContent=game.score}};$("quizOptions").append(b)})}
+document.querySelectorAll(".cycle").forEach(b=>b.onclick=()=>{cycle=b.dataset.cycle;document.querySelectorAll(".cycle").forEach(x=>x.classList.toggle("active",x===b));populateTopics();start()});
+document.querySelectorAll(".area").forEach(b=>b.onclick=()=>{area=b.dataset.area;document.querySelectorAll(".area").forEach(x=>x.classList.toggle("active",x===b));populateTopics();start()});
+$("topic").onchange=()=>{topic=$("topic").value;start()};$("level").onchange=()=>{level=$("level").value;start()};$("new").onclick=()=>start();$("hint").onclick=hint;$("speak").onclick=()=>speak(game.words.filter(w=>!game.found.has(w)).length?game.words.filter(w=>!game.found.has(w)):game.words);$("verify").onclick=verify;
+$("makeCustom").onclick=()=>{let words=$("customWords").value.split(/[\n,;]+/).map(s=>s.trim()).filter(Boolean);if(words.length<5||words.length>15){$("feedback").textContent="Escribe entre 5 y 15 palabras.";return}start(words)};
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+populateTopics();start();
+</script></body></html>
