@@ -18,7 +18,7 @@ button{cursor:pointer;transition:transform .12s,filter .12s}button:hover{filter:
 .progressrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#dcfce7;border-radius:14px;padding:10px 12px;margin-top:12px}.progressrow strong{white-space:nowrap}.progress{height:13px;flex:1;min-width:100px;background:#bbf7d0;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#16a34a,#a3e635);transition:width .3s}.stat{background:white;padding:6px 10px;border-radius:10px;font-weight:900}.feedback{min-height:25px;font-weight:800;color:#6d28d9;margin:10px 2px 0}.teacher textarea{width:100%;min-height:90px;border:2px solid #c7d2fe;padding:10px}.teacher button{background:#6d28d9;color:white;border:0;padding:11px 14px;font-weight:900}.quizopts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quizopts button{background:#ede9fe;color:#4c1d95;border:2px solid #c4b5fd;padding:10px;font-weight:800}.quizopts button.correct{background:#dcfce7;border-color:#22c55e}.quizopts button.wrong{background:#fee2e2;border-color:#ef4444}.foot{text-align:center;color:#64748b;padding:14px;font-size:12px}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.hero img{height:145px}.layout{grid-template-columns:1fr}.gamegrid{grid-template-columns:1fr}.wordlist{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none}.actions{grid-template-columns:repeat(2,1fr)}.cell{font-size:clamp(12px,3vw,18px)}}
 @media(max-width:450px){main{padding:8px}.panel{padding:10px}.wordlist{grid-template-columns:1fr 1fr}.welcome .mascot{font-size:44px}.actions button{font-size:13px}.grid{gap:2px}.cell{border-radius:4px}}
-#wordList{display:grid!important;visibility:visible!important;opacity:1!important;min-height:80px}#wordList .word{display:flex!important;color:#172554!important;background:#fff!important}#wordList .word span{color:#172554!important}.cell{user-select:none;-webkit-user-select:none;touch-action:manipulation;cursor:pointer}.cell.selected{background:#fde047!important}.cell.found{background:#86efac!important}</style></head>
+#wordList{display:grid!important;visibility:visible!important;opacity:1!important;min-height:80px}#wordList .word{display:flex!important;color:#172554!important;background:#fff!important}#wordList .word span{color:#172554!important}.cell{user-select:none;-webkit-user-select:none;touch-action:manipulation;cursor:pointer;pointer-events:auto}.cell.selected{background:#fde047!important}.cell.found{background:#86efac!important}</style></head>
 <body>
 <header><div class="brand"><div class="emoji">🔎🌈</div><div><h1>Pupiletras Educativas</h1><div class="subtitle">¡Descubre, busca, lee y aprende jugando!</div></div></div></header>
 <main>
@@ -35,7 +35,7 @@ button{cursor:pointer;transition:transform .12s,filter .12s}button:hover{filter:
 </aside>
 <section>
  <div class="gamehead"><h2 id="gameTitle">📚 Comunicación · Vocales y palabras</h2><span class="cyclebadge" id="badge">III ciclo · 1.º–2.º</span></div>
- <div class="instructions"><div class="big">💡</div><p><b>¿Cómo jugar?</b><br>Toca la primera letra de una palabra y luego la última. Busca las palabras en horizontal, vertical o diagonal. ¡Cada palabra vale 10 puntos!</p></div>
+ <div class="instructions"><div class="big">💡</div><p><b>¿Cómo jugar?</b><br>Haz clic en la primera letra de una palabra y luego en su última letra. Busca en horizontal, vertical o diagonal. ¡Cada palabra vale 10 puntos!</p></div>
  <div class="gamegrid">
   <div class="grid-wrap"><div class="grid" id="grid" aria-label="Cuadrícula de letras"></div></div>
   <div class="wordbox"><h3>📝 Palabras por encontrar <span id="wordCount"></span></h3><div class="wordlist" id="wordList"></div></div>
@@ -87,57 +87,46 @@ function render(){
 }
 function clearMarks(){document.querySelectorAll(".cell.selected,.cell.hint").forEach(e=>e.classList.remove("selected","hint"))}
 function choose(r,c){
- const el=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
- if(!el) return;
- if(el.classList.contains("found")){
-   $("feedback").textContent="Esa letra ya pertenece a una palabra encontrada. Busca otra palabra.";
-   return;
- }
+ const cell=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+ if(!cell) return;
  if(!game.first){
    clearMarks();
    game.first={r,c};
-   el.classList.add("selected");
-   $("feedback").textContent="Primera letra seleccionada. Ahora toca la última letra de la palabra. También puedes tocar una letra de la palabra y luego otra para marcar su dirección.";
+   cell.classList.add("selected");
+   $("feedback").textContent="Inicio seleccionado. Ahora haz clic en la última letra de la palabra.";
    return;
  }
- const a=game.first;
+ const first=game.first;
  game.first=null;
  clearMarks();
- const dr=r-a.r, dc=c-a.c;
- if(!(dr===0 || dc===0 || Math.abs(dr)===Math.abs(dc))){
-   $("feedback").textContent="Las dos letras deben estar en una misma línea: horizontal, vertical o diagonal. Inténtalo otra vez.";
+
+ // Find a word whose stored start and end coordinates match the two clicked cells.
+ const placement=game.placements.find(p=>{
+   if(game.found.has(p.word)) return false;
+   const endR=p.r+p.dr*(p.word.length-1);
+   const endC=p.c+p.dc*(p.word.length-1);
+   return (first.r===p.r && first.c===p.c && r===endR && c===endC) ||
+          (r===p.r && c===p.c && first.r===endR && first.c===endC);
+ });
+
+ if(!placement){
+   const dr=r-first.r, dc=c-first.c;
+   if(!(dr===0 || dc===0 || Math.abs(dr)===Math.abs(dc))){
+     $("feedback").textContent="No están en la misma línea. Prueba en horizontal, vertical o diagonal.";
+   } else {
+     $("feedback").textContent="No coincide con una palabra pendiente. Selecciona exactamente la primera y la última letra.";
+   }
    return;
  }
- const sr=Math.sign(dr), sc=Math.sign(dc), len=Math.max(Math.abs(dr),Math.abs(dc))+1;
- let txt="";
- for(let i=0;i<len;i++) txt+=game.grid[a.r+sr*i][a.c+sc*i];
- const rev=txt.split("").reverse().join("");
- let hit=game.words.find(w=>!game.found.has(w) && (w===txt || w===rev));
- let p=null;
- if(hit){
-   p=game.placements.find(x=>x.word===hit);
- } else {
-   // Helpful fallback: if the selected segment is not exactly a word,
-   // check whether both endpoints lie on a still-hidden word placement.
-   p=game.placements.find(x=>{
-     if(game.found.has(x.word)) return false;
-     const endR=x.r+x.dr*(x.word.length-1), endC=x.c+x.dc*(x.word.length-1);
-     const direct=(a.r===x.r && a.c===x.c && r===endR && c===endC);
-     const reverse=(r===x.r && c===x.c && a.r===endR && a.c===endC);
-     return direct || reverse;
-   });
-   if(p) hit=p.word;
- }
- if(!hit){
-   $("feedback").textContent=`La selección “${txt}” no coincide con una palabra. Toca su primera y última letra en la misma línea.`;
-   return;
- }
+
+ const hit=placement.word;
  game.found.add(hit);
  game.score+=10;
- const placement=game.placements.find(x=>x.word===hit);
  for(let i=0;i<hit.length;i++){
-   const rr=placement.r+placement.dr*i, cc=placement.c+placement.dc*i;
-   document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`)?.classList.add("found");
+   const rr=placement.r+placement.dr*i;
+   const cc=placement.c+placement.dc*i;
+   const letterCell=document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`);
+   if(letterCell) letterCell.classList.add("found");
  }
  render();
  $("feedback").textContent="🌟 ¡Muy bien! Encontraste "+hit+".";
@@ -145,7 +134,7 @@ function choose(r,c){
    clearInterval(game.timer);
    game.score+=30;
    $("score").textContent=game.score;
-   $("feedback").textContent="🎉 ¡Lo lograste! Encontraste todas las palabras y ganaste 30 puntos extra.";
+   $("feedback").textContent="🎉 ¡Excelente! Encontraste todas las palabras y ganaste 30 puntos extra.";
  }
 }
 function hint(){let left=game.words.filter(w=>!game.found.has(w));if(!left.length){$("feedback").textContent="¡Ya encontraste todas las palabras!";return}let w=left[game.hintAt%left.length];game.hintAt++;let p=game.placements.find(x=>x.word===w);clearMarks();for(let i=0;i<w.length;i++)document.querySelector(`.cell[data-r="${p.r+p.dr*i}"][data-c="${p.c+p.dc*i}"]`)?.classList.add("hint");$("feedback").textContent="💡 Pista: las letras azules forman "+w+". Observa su dirección."}
