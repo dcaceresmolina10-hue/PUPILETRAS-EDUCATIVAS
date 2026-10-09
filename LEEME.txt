@@ -17,3 +17,6 @@ El historial se guarda solo en el navegador y dispositivo donde se usa. No es un
 
 AUDIO
 La lectura usa las voces disponibles en el navegador/dispositivo. Se recomienda Chrome actualizado y tener el volumen activado.
+
+
+NOVEDAD VERSIÓN 7: registro de estudiante y grado, panel del docente con resumen de resultados, filtro por estudiante y descarga del reporte en CSV para abrir en Excel. Los datos se guardan en el navegador/dispositivo. Selecciona y guarda el estudiante antes de realizar las actividades.
