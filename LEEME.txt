@@ -20,3 +20,6 @@ La lectura usa las voces disponibles en el navegador/dispositivo. Se recomienda 
 
 
 NOVEDAD VERSIÓN 7: registro de estudiante y grado, panel del docente con resumen de resultados, filtro por estudiante y descarga del reporte en CSV para abrir en Excel. Los datos se guardan en el navegador/dispositivo. Selecciona y guarda el estudiante antes de realizar las actividades.
+
+
+VERSIÓN 8: Se amplió el repertorio de representaciones visuales para que las palabras de los distintos ciclos y áreas muestren una imagen/emoji relacionada en la actividad de asociación. También se actualizó la caché del navegador.
